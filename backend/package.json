@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "seed": "node src/config/seed.js"
+    "db:reset": "node src/config/reset-db.js",
+    "db:seed": "node src/config/reset-db.js",
+    "test": "node test-backend.js"
   },
   "dependencies": {
     "axios": "^1.7.9",
