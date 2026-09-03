@@ -341,7 +341,7 @@ npm run build
 
 ### Submission Details
 - **Candidate Name**: Shaik Akram
-- **Video Walkthrough Link**: `https://www.loom.com/share/your-video-link-here` *(replace with your recorded URL)*
+- **Video Walkthrough Link**: `(https://drive.google.com/file/d/1nJbMohX6f8EE0dqtm7EslAejaHlAqktZ/view?usp=sharing)` 
 - **GitHub Repository**: `https://github.com/akram369/custom-employee-portal`
 - **Submission Date**: September 2026
 
