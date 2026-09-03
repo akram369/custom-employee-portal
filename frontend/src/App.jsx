@@ -10,7 +10,7 @@ import { ShieldAlert, ArrowLeft } from 'lucide-react';
 export default function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [currentView, setCurrentView] = useState('dashboard'); // 'dashboard' | 'admin'
+  const [currentView, setCurrentView] = useState('dashboard'); // 'dashboard' | 'applications' | 'activity' | 'admin'
 
   // Restore session from token on mount
   useEffect(() => {
@@ -60,14 +60,37 @@ export default function App() {
     }
   };
 
+  // Scroll to section when subview is clicked
+  useEffect(() => {
+    if (currentView === 'applications') {
+      const el = document.getElementById('applications-section');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    } else if (currentView === 'activity') {
+      const el = document.getElementById('activity-section');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    } else if (currentView === 'dashboard') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [currentView]);
+
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#ffffff' }}>
         <div style={{ textAlign: 'center' }}>
-          <div className="brand-icon spin" style={{ width: 48, height: 48, margin: '0 auto 1rem' }}>
-            ⚡
-          </div>
-          <p style={{ color: 'var(--text-secondary)' }}>Initializing secure portal session...</p>
+          <div 
+            className="spin" 
+            style={{ 
+              width: 44, 
+              height: 44, 
+              margin: '0 auto 1rem', 
+              borderRadius: '50%', 
+              border: '3px solid #eff6ff', 
+              borderTopColor: '#0c66e4' 
+            }}
+          />
+          <p style={{ color: 'var(--text-secondary)', fontWeight: 600, fontSize: '0.95rem' }}>
+            Initializing Enterprise Portal session...
+          </p>
         </div>
       </div>
     );
@@ -88,10 +111,11 @@ export default function App() {
         setCurrentView={setCurrentView}
       />
 
-      {currentView === 'dashboard' && (
+      {(currentView === 'dashboard' || currentView === 'applications' || currentView === 'activity') && (
         <DashboardPage
           currentUser={currentUser}
           onSwitchUser={handleSwitchUser}
+          initialSubView={currentView}
         />
       )}
 
@@ -100,20 +124,34 @@ export default function App() {
           <AdminPanelPage currentUser={currentUser} />
         ) : (
           <div className="main-content" style={{ textAlign: 'center', padding: '4rem 1.5rem' }}>
-            <div className="glass-panel" style={{ maxWidth: '520px', margin: '0 auto', padding: '3rem 2rem' }}>
-              <ShieldAlert size={48} style={{ color: 'var(--danger)', margin: '0 auto 1rem' }} />
-              <h2 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '0.75rem', color: '#f87171' }}>
+            <div className="saas-card" style={{ maxWidth: '520px', margin: '0 auto', padding: '3.5rem 2.5rem' }}>
+              <div 
+                style={{ 
+                  width: 56, 
+                  height: 56, 
+                  borderRadius: '50%', 
+                  background: 'var(--danger-bg)', 
+                  color: 'var(--danger)', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  margin: '0 auto 1.25rem' 
+                }}
+              >
+                <ShieldAlert size={32} />
+              </div>
+              <h2 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '0.75rem', color: 'var(--text-title)' }}>
                 403 Forbidden: Insufficient Privileges
               </h2>
-              <p style={{ fontSize: '0.9rem', marginBottom: '1.5rem', lineHeight: 1.6 }}>
-                Your assigned role is <strong>{currentUser.roles?.join(', ')}</strong>. The Administrator Control Center is restricted strictly to the <strong>Admin</strong> role. This unauthorized attempt has been recorded in the security audit trail.
+              <p style={{ fontSize: '0.925rem', marginBottom: '1.75rem', lineHeight: 1.6, color: 'var(--text-secondary)' }}>
+                Your current role is <strong>{currentUser.roles?.join(', ')}</strong>. The Administration Console is restricted strictly to the <strong>Admin</strong> role. This attempt has been logged in the security audit trail.
               </p>
               <button
                 className="btn btn-secondary"
                 onClick={() => setCurrentView('dashboard')}
               >
                 <ArrowLeft size={16} />
-                <span>Return to Authorized Dashboard</span>
+                <span>Return to Workspace</span>
               </button>
             </div>
           </div>

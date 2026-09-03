@@ -16,31 +16,35 @@ export default function ZohoDataModal({ app, data, loading, error, onClose, onRe
   if (!app) return null;
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-window" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
-        <div className="modal-header">
+        <div className="modal-header-clean">
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
             <div 
               style={{
-                width: 40,
-                height: 40,
-                borderRadius: '8px',
-                background: app.themeColor || 'var(--primary-500)',
+                width: 44,
+                height: 44,
+                borderRadius: '12px',
+                background: app.id === 'zoho_people' ? '#ecfdf5' :
+                            app.id === 'zoho_crm' ? '#eff6ff' :
+                            app.id === 'zoho_desk' ? '#fff7ed' : '#f5f3ff',
+                color: app.id === 'zoho_people' ? '#059669' :
+                       app.id === 'zoho_crm' ? '#0c66e4' :
+                       app.id === 'zoho_desk' ? '#ea580c' : '#7c3aed',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
-                color: '#fff'
+                justifyContent: 'center'
               }}
             >
-              <Database size={20} />
+              <Database size={22} />
             </div>
             <div>
-              <h3 style={{ fontSize: '1.2rem', fontWeight: 700 }}>
-                {app.name} - Live Backend Proxy Data
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-title)' }}>
+                {app.name} Live Data Explorer
               </h3>
-              <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                Protected Backend Service Account Proxy • Role Requirement: {app.role}
+              <p style={{ fontSize: '0.825rem', color: 'var(--text-muted)' }}>
+                Backend Service Account Proxy • Permitted Role: <strong>{app.role}</strong>
               </p>
             </div>
           </div>
@@ -54,57 +58,57 @@ export default function ZohoDataModal({ app, data, loading, error, onClose, onRe
           </button>
         </div>
 
-        {/* Security Banner */}
+        {/* Security Notice Banner */}
         <div 
           style={{ 
-            background: 'rgba(99, 102, 241, 0.08)', 
-            borderBottom: '1px solid rgba(99, 102, 241, 0.15)',
-            padding: '0.75rem 1.75rem',
+            background: '#f0f9ff', 
+            borderBottom: '1px solid #e0f2fe',
+            padding: '0.85rem 2rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            fontSize: '0.8rem'
+            fontSize: '0.825rem'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#a5b4fc' }}>
-            <ShieldCheck size={16} />
-            <span><strong>Zero-Credential Security Architecture:</strong> Proxied via backend OAuth token. No employee Zoho password required.</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#0369a1' }}>
+            <ShieldCheck size={18} style={{ color: '#0284c7' }} />
+            <span><strong>Zero-Credential Guarantee:</strong> Proxied via backend OAuth token. No employee Zoho password required.</span>
           </div>
 
           {data?.integration && (
-            <span className={`badge ${data.integration.isLive ? 'badge-live' : 'badge-demo'}`}>
+            <span className={`badge ${data.integration.isLive ? 'badge-success' : 'badge-warning'}`}>
               {data.integration.isLive ? 'Live Zoho Cloud' : 'Demo Verification Mode'}
             </span>
           )}
         </div>
 
-        {/* Body */}
-        <div className="modal-body">
+        {/* Modal Body */}
+        <div className="modal-body-clean">
           {loading ? (
-            <div style={{ textAlign: 'center', padding: '3rem' }}>
+            <div style={{ textAlign: 'center', padding: '3.5rem' }}>
               <RefreshCw className="spin" size={32} style={{ color: 'var(--primary-500)', margin: '0 auto 1rem' }} />
-              <p>Contacting backend Zoho proxy service...</p>
+              <p style={{ color: 'var(--text-secondary)' }}>Connecting to backend Zoho proxy service...</p>
             </div>
           ) : error ? (
-            <div style={{ padding: '2rem', textAlign: 'center' }}>
+            <div style={{ padding: '2.5rem', textAlign: 'center' }}>
               <AlertCircle size={36} style={{ color: 'var(--danger)', margin: '0 auto 0.75rem' }} />
-              <h4 style={{ color: 'var(--danger)', marginBottom: '0.5rem' }}>Failed to Load Data</h4>
-              <p style={{ fontSize: '0.875rem' }}>{error}</p>
+              <h4 style={{ color: 'var(--danger)', marginBottom: '0.5rem', fontWeight: 700 }}>Unable to Load Service Data</h4>
+              <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{error}</p>
             </div>
           ) : (
             <div>
               {/* Tab Navigation */}
-              <div style={{ display: 'flex', gap: '1rem', borderBottom: '1px solid var(--border-subtle)', marginBottom: '1.25rem' }}>
+              <div style={{ display: 'flex', gap: '1.25rem', borderBottom: '1px solid var(--border-default)', marginBottom: '1.5rem' }}>
                 <button
                   style={{
                     background: 'transparent',
                     border: 'none',
                     borderBottom: activeTab === 'formatted' ? '2px solid var(--primary-500)' : '2px solid transparent',
-                    color: activeTab === 'formatted' ? 'var(--text-primary)' : 'var(--text-secondary)',
+                    color: activeTab === 'formatted' ? 'var(--primary-500)' : 'var(--text-muted)',
                     padding: '0.5rem 0.25rem',
-                    fontWeight: 600,
+                    fontWeight: 700,
                     cursor: 'pointer',
-                    fontSize: '0.875rem'
+                    fontSize: '0.9rem'
                   }}
                   onClick={() => setActiveTab('formatted')}
                 >
@@ -115,220 +119,224 @@ export default function ZohoDataModal({ app, data, loading, error, onClose, onRe
                     background: 'transparent',
                     border: 'none',
                     borderBottom: activeTab === 'raw' ? '2px solid var(--primary-500)' : '2px solid transparent',
-                    color: activeTab === 'raw' ? 'var(--text-primary)' : 'var(--text-secondary)',
+                    color: activeTab === 'raw' ? 'var(--primary-500)' : 'var(--text-muted)',
                     padding: '0.5rem 0.25rem',
-                    fontWeight: 600,
+                    fontWeight: 700,
                     cursor: 'pointer',
-                    fontSize: '0.875rem',
+                    fontSize: '0.9rem',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.35rem'
                   }}
                   onClick={() => setActiveTab('raw')}
                 >
-                  <Code size={14} />
+                  <Code size={15} />
                   <span>Raw API Response</span>
                 </button>
               </div>
 
               {activeTab === 'formatted' ? (
                 <div>
-                  {/* Summary Metric Stats */}
+                  {/* Summary Metric Stats Cards */}
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '1.5rem' }}>
                     {app.id === 'zoho_people' && (
                       <>
-                        <div className="glass-panel" style={{ padding: '0.85rem' }}>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>TOTAL EMPLOYEES</div>
-                          <div style={{ fontSize: '1.35rem', fontWeight: 700, color: '#10b981' }}>{data?.payload?.totalEmployees || 48}</div>
+                        <div style={{ background: '#f8fafc', border: '1px solid var(--border-default)', borderRadius: '12px', padding: '1rem' }}>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700 }}>TOTAL EMPLOYEES</div>
+                          <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#059669', marginTop: '0.2rem' }}>{data?.payload?.totalEmployees || 48}</div>
                         </div>
-                        <div className="glass-panel" style={{ padding: '0.85rem' }}>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>ON LEAVE TODAY</div>
-                          <div style={{ fontSize: '1.35rem', fontWeight: 700, color: '#f59e0b' }}>{data?.payload?.activeLeavesToday || 3}</div>
+                        <div style={{ background: '#f8fafc', border: '1px solid var(--border-default)', borderRadius: '12px', padding: '1rem' }}>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700 }}>ON LEAVE TODAY</div>
+                          <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#ea580c', marginTop: '0.2rem' }}>{data?.payload?.activeLeavesToday || 3}</div>
                         </div>
-                        <div className="glass-panel" style={{ padding: '0.85rem' }}>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>OPEN REQUISITIONS</div>
-                          <div style={{ fontSize: '1.35rem', fontWeight: 700, color: '#6366f1' }}>{data?.payload?.openRequisitions || 5}</div>
+                        <div style={{ background: '#f8fafc', border: '1px solid var(--border-default)', borderRadius: '12px', padding: '1rem' }}>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700 }}>OPEN POSITIONS</div>
+                          <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0c66e4', marginTop: '0.2rem' }}>{data?.payload?.openRequisitions || 5}</div>
                         </div>
                       </>
                     )}
 
                     {app.id === 'zoho_crm' && (
                       <>
-                        <div className="glass-panel" style={{ padding: '0.85rem' }}>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>PIPELINE VALUE</div>
-                          <div style={{ fontSize: '1.35rem', fontWeight: 700, color: '#3b82f6' }}>{data?.payload?.activePipelineValue || '$485,000'}</div>
+                        <div style={{ background: '#f8fafc', border: '1px solid var(--border-default)', borderRadius: '12px', padding: '1rem' }}>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700 }}>ACTIVE PIPELINE</div>
+                          <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0c66e4', marginTop: '0.2rem' }}>{data?.payload?.activePipelineValue || '$485,000'}</div>
                         </div>
-                        <div className="glass-panel" style={{ padding: '0.85rem' }}>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>CLOSING THIS MONTH</div>
-                          <div style={{ fontSize: '1.35rem', fontWeight: 700, color: '#10b981' }}>{data?.payload?.dealsClosingThisMonth || 8}</div>
+                        <div style={{ background: '#f8fafc', border: '1px solid var(--border-default)', borderRadius: '12px', padding: '1rem' }}>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700 }}>CLOSING THIS MONTH</div>
+                          <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#059669', marginTop: '0.2rem' }}>{data?.payload?.dealsClosingThisMonth || 8}</div>
                         </div>
-                        <div className="glass-panel" style={{ padding: '0.85rem' }}>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>CONVERSION RATE</div>
-                          <div style={{ fontSize: '1.35rem', fontWeight: 700, color: '#8b5cf6' }}>{data?.payload?.conversionRate || '34.2%'}</div>
+                        <div style={{ background: '#f8fafc', border: '1px solid var(--border-default)', borderRadius: '12px', padding: '1rem' }}>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700 }}>CONVERSION RATE</div>
+                          <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#7c3aed', marginTop: '0.2rem' }}>{data?.payload?.conversionRate || '34.2%'}</div>
                         </div>
                       </>
                     )}
 
                     {app.id === 'zoho_desk' && (
                       <>
-                        <div className="glass-panel" style={{ padding: '0.85rem' }}>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>OPEN TICKETS</div>
-                          <div style={{ fontSize: '1.35rem', fontWeight: 700, color: '#f59e0b' }}>{data?.payload?.openTickets || 14}</div>
+                        <div style={{ background: '#f8fafc', border: '1px solid var(--border-default)', borderRadius: '12px', padding: '1rem' }}>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700 }}>OPEN TICKETS</div>
+                          <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#ea580c', marginTop: '0.2rem' }}>{data?.payload?.openTickets || 14}</div>
                         </div>
-                        <div className="glass-panel" style={{ padding: '0.85rem' }}>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>AVG RESOLUTION</div>
-                          <div style={{ fontSize: '1.35rem', fontWeight: 700, color: '#10b981' }}>{data?.payload?.avgResolutionTime || '2.4 Hours'}</div>
+                        <div style={{ background: '#f8fafc', border: '1px solid var(--border-default)', borderRadius: '12px', padding: '1rem' }}>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700 }}>AVG RESOLUTION</div>
+                          <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#059669', marginTop: '0.2rem' }}>{data?.payload?.avgResolutionTime || '2.4 Hours'}</div>
                         </div>
-                        <div className="glass-panel" style={{ padding: '0.85rem' }}>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>SLA COMPLIANCE</div>
-                          <div style={{ fontSize: '1.35rem', fontWeight: 700, color: '#3b82f6' }}>{data?.payload?.slaCompliance || '98.6%'}</div>
+                        <div style={{ background: '#f8fafc', border: '1px solid var(--border-default)', borderRadius: '12px', padding: '1rem' }}>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700 }}>SLA COMPLIANCE</div>
+                          <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0c66e4', marginTop: '0.2rem' }}>{data?.payload?.slaCompliance || '98.6%'}</div>
                         </div>
                       </>
                     )}
 
                     {app.id === 'zoho_books' && (
                       <>
-                        <div className="glass-panel" style={{ padding: '0.85rem' }}>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>RECEIVABLES</div>
-                          <div style={{ fontSize: '1.35rem', fontWeight: 700, color: '#8b5cf6' }}>{data?.payload?.totalReceivables || '$142,850.00'}</div>
+                        <div style={{ background: '#f8fafc', border: '1px solid var(--border-default)', borderRadius: '12px', padding: '1rem' }}>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700 }}>RECEIVABLES</div>
+                          <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#7c3aed', marginTop: '0.2rem' }}>{data?.payload?.totalReceivables || '$142,850.00'}</div>
                         </div>
-                        <div className="glass-panel" style={{ padding: '0.85rem' }}>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>UNPAID INVOICES</div>
-                          <div style={{ fontSize: '1.35rem', fontWeight: 700, color: '#f59e0b' }}>{data?.payload?.unpaidInvoices || 6}</div>
+                        <div style={{ background: '#f8fafc', border: '1px solid var(--border-default)', borderRadius: '12px', padding: '1rem' }}>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700 }}>UNPAID INVOICES</div>
+                          <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#ea580c', marginTop: '0.2rem' }}>{data?.payload?.unpaidInvoices || 6}</div>
                         </div>
-                        <div className="glass-panel" style={{ padding: '0.85rem' }}>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>OVERDUE AMOUNT</div>
-                          <div style={{ fontSize: '1.35rem', fontWeight: 700, color: '#ef4444' }}>{data?.payload?.overdueAmount || '$12,400.00'}</div>
+                        <div style={{ background: '#f8fafc', border: '1px solid var(--border-default)', borderRadius: '12px', padding: '1rem' }}>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700 }}>OVERDUE AMOUNT</div>
+                          <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#dc2626', marginTop: '0.2rem' }}>{data?.payload?.overdueAmount || '$12,400.00'}</div>
                         </div>
                       </>
                     )}
                   </div>
 
-                  {/* Data Records Table */}
-                  <div className="table-container">
-                    <table className="data-table">
-                      <thead>
-                        {app.id === 'zoho_people' && (
-                          <tr>
-                            <th>EMP ID</th>
-                            <th>EMPLOYEE NAME</th>
-                            <th>DEPARTMENT</th>
-                            <th>DESIGNATION</th>
-                            <th>STATUS</th>
-                            <th>LEAVE BALANCE</th>
-                          </tr>
-                        )}
-                        {app.id === 'zoho_crm' && (
-                          <tr>
-                            <th>LEAD ID</th>
-                            <th>COMPANY</th>
-                            <th>CONTACT PERSON</th>
-                            <th>PIPELINE VALUE</th>
-                            <th>SALES STAGE</th>
-                            <th>PROBABILITY</th>
-                          </tr>
-                        )}
-                        {app.id === 'zoho_desk' && (
-                          <tr>
-                            <th>TICKET ID</th>
-                            <th>SUBJECT</th>
-                            <th>CUSTOMER</th>
-                            <th>PRIORITY</th>
-                            <th>STATUS</th>
-                            <th>AGENT</th>
-                          </tr>
-                        )}
-                        {app.id === 'zoho_books' && (
-                          <tr>
-                            <th>INVOICE #</th>
-                            <th>CLIENT</th>
-                            <th>AMOUNT</th>
-                            <th>STATUS</th>
-                            <th>ISSUE DATE</th>
-                            <th>DUE DATE</th>
-                          </tr>
-                        )}
-                      </thead>
-                      <tbody>
-                        {data?.payload?.records?.map((rec, i) => (
-                          <tr key={i}>
-                            {app.id === 'zoho_people' && (
-                              <>
-                                <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{rec.id}</td>
-                                <td style={{ fontWeight: 600 }}>{rec.name}</td>
-                                <td>{rec.department}</td>
-                                <td>{rec.role}</td>
-                                <td>
-                                  <span className={`badge ${rec.status === 'Active' ? 'badge-HR' : 'badge-Support'}`}>
-                                    {rec.status}
-                                  </span>
-                                </td>
-                                <td>{rec.leaveBalance}</td>
-                              </>
-                            )}
+                  {/* Clean White Table */}
+                  <div className="table-card">
+                    <div className="table-responsive">
+                      <table className="saas-table">
+                        <thead>
+                          {app.id === 'zoho_people' && (
+                            <tr>
+                              <th>EMP ID</th>
+                              <th>EMPLOYEE</th>
+                              <th>DEPARTMENT</th>
+                              <th>DESIGNATION</th>
+                              <th>STATUS</th>
+                              <th>LEAVE BALANCE</th>
+                            </tr>
+                          )}
+                          {app.id === 'zoho_crm' && (
+                            <tr>
+                              <th>LEAD ID</th>
+                              <th>COMPANY</th>
+                              <th>CONTACT</th>
+                              <th>PIPELINE VALUE</th>
+                              <th>STAGE</th>
+                              <th>PROBABILITY</th>
+                            </tr>
+                          )}
+                          {app.id === 'zoho_desk' && (
+                            <tr>
+                              <th>TICKET ID</th>
+                              <th>SUBJECT</th>
+                              <th>CUSTOMER</th>
+                              <th>PRIORITY</th>
+                              <th>STATUS</th>
+                              <th>ASSIGNED AGENT</th>
+                            </tr>
+                          )}
+                          {app.id === 'zoho_books' && (
+                            <tr>
+                              <th>INVOICE #</th>
+                              <th>CLIENT</th>
+                              <th>AMOUNT</th>
+                              <th>STATUS</th>
+                              <th>ISSUE DATE</th>
+                              <th>DUE DATE</th>
+                            </tr>
+                          )}
+                        </thead>
+                        <tbody>
+                          {data?.payload?.records?.map((rec, i) => (
+                            <tr key={i}>
+                              {app.id === 'zoho_people' && (
+                                <>
+                                  <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{rec.id}</td>
+                                  <td style={{ fontWeight: 700 }}>{rec.name}</td>
+                                  <td>{rec.department}</td>
+                                  <td>{rec.role}</td>
+                                  <td>
+                                    <span className={`badge ${rec.status === 'Active' ? 'badge-success' : 'badge-warning'}`}>
+                                      {rec.status}
+                                    </span>
+                                  </td>
+                                  <td>{rec.leaveBalance}</td>
+                                </>
+                              )}
 
-                            {app.id === 'zoho_crm' && (
-                              <>
-                                <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{rec.id}</td>
-                                <td style={{ fontWeight: 600 }}>{rec.company}</td>
-                                <td>{rec.contact}</td>
-                                <td style={{ color: '#38bdf8', fontWeight: 600 }}>{rec.value}</td>
-                                <td>
-                                  <span className="badge badge-Sales">{rec.stage}</span>
-                                </td>
-                                <td>{rec.probability}</td>
-                              </>
-                            )}
+                              {app.id === 'zoho_crm' && (
+                                <>
+                                  <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{rec.id}</td>
+                                  <td style={{ fontWeight: 700 }}>{rec.company}</td>
+                                  <td>{rec.contact}</td>
+                                  <td style={{ color: 'var(--primary-600)', fontWeight: 700 }}>{rec.value}</td>
+                                  <td>
+                                    <span className="badge badge-Sales">{rec.stage}</span>
+                                  </td>
+                                  <td>{rec.probability}</td>
+                                </>
+                              )}
 
-                            {app.id === 'zoho_desk' && (
-                              <>
-                                <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{rec.id}</td>
-                                <td style={{ fontWeight: 600 }}>{rec.subject}</td>
-                                <td>{rec.customer}</td>
-                                <td>
-                                  <span className={`badge ${rec.priority === 'Urgent' || rec.priority === 'High' ? 'badge-Admin' : 'badge-Support'}`}>
-                                    {rec.priority}
-                                  </span>
-                                </td>
-                                <td>{rec.status}</td>
-                                <td>{rec.assignedTo}</td>
-                              </>
-                            )}
+                              {app.id === 'zoho_desk' && (
+                                <>
+                                  <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{rec.id}</td>
+                                  <td style={{ fontWeight: 700 }}>{rec.subject}</td>
+                                  <td>{rec.customer}</td>
+                                  <td>
+                                    <span className={`badge ${rec.priority === 'Urgent' || rec.priority === 'High' ? 'badge-danger' : 'badge-warning'}`}>
+                                      {rec.priority}
+                                    </span>
+                                  </td>
+                                  <td>{rec.status}</td>
+                                  <td>{rec.assignedTo}</td>
+                                </>
+                              )}
 
-                            {app.id === 'zoho_books' && (
-                              <>
-                                <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{rec.id}</td>
-                                <td style={{ fontWeight: 600 }}>{rec.client}</td>
-                                <td style={{ color: '#a78bfa', fontWeight: 600 }}>{rec.amount}</td>
-                                <td>
-                                  <span className={`badge ${rec.status === 'Paid' ? 'badge-HR' : rec.status === 'Overdue' ? 'badge-Admin' : 'badge-Finance'}`}>
-                                    {rec.status}
-                                  </span>
-                                </td>
-                                <td>{rec.date}</td>
-                                <td>{rec.dueDate}</td>
-                              </>
-                            )}
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                              {app.id === 'zoho_books' && (
+                                <>
+                                  <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{rec.id}</td>
+                                  <td style={{ fontWeight: 700 }}>{rec.client}</td>
+                                  <td style={{ color: '#7c3aed', fontWeight: 700 }}>{rec.amount}</td>
+                                  <td>
+                                    <span className={`badge ${rec.status === 'Paid' ? 'badge-success' : rec.status === 'Overdue' ? 'badge-danger' : 'badge-Finance'}`}>
+                                      {rec.status}
+                                    </span>
+                                  </td>
+                                  <td>{rec.date}</td>
+                                  <td>{rec.dueDate}</td>
+                                </>
+                              )}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               ) : (
-                <pre className="json-viewer">
-                  {JSON.stringify(data, null, 2)}
-                </pre>
+                <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '12px', border: '1px solid var(--border-default)' }}>
+                  <pre style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: '#0f172a', maxHeight: '300px', overflow: 'auto' }}>
+                    {JSON.stringify(data, null, 2)}
+                  </pre>
+                </div>
               )}
             </div>
           )}
         </div>
 
         {/* Footer */}
-        <div className="modal-footer">
+        <div className="modal-footer-clean">
           <button className="btn btn-secondary btn-sm" onClick={onRefresh} disabled={loading}>
             <RefreshCw size={14} className={loading ? 'spin' : ''} />
-            <span>Refresh Data</span>
+            <span>Refresh</span>
           </button>
           <a
             href={app.officialUrl}
@@ -336,7 +344,7 @@ export default function ZohoDataModal({ app, data, loading, error, onClose, onRe
             rel="noopener noreferrer"
             className="btn btn-primary btn-sm"
           >
-            <span>Open {app.name} Portal</span>
+            <span>Open {app.name} Directly</span>
             <ExternalLink size={14} />
           </a>
         </div>

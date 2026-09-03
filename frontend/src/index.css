@@ -1,56 +1,87 @@
+/* ==========================================================================
+   Enterprise Employee Portal - Zoho SaaS Design Language
+   Inspired by Zoho CRM: Bright, Clean, Crisp Typography, Generous Whitespace,
+   Pastel Gradients, Royal Blue Accents, Thin Borders & Soft Shadows.
+   ========================================================================== */
+
 :root {
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Color Palette - Premium Modern Dark / Slate */
-  --bg-main: #0a0f1d;
-  --bg-card: rgba(17, 24, 39, 0.75);
-  --bg-card-hover: rgba(30, 41, 59, 0.85);
-  --bg-input: rgba(15, 23, 42, 0.6);
-  --bg-sidebar: rgba(13, 19, 33, 0.9);
+  /* Surfaces & Backgrounds */
+  --bg-page: #fbfcfd;
+  --bg-surface: #ffffff;
+  --bg-surface-subtle: #f8fafc;
+  --bg-surface-hover: #f1f5f9;
+  --bg-input: #ffffff;
   
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-glow: rgba(99, 102, 241, 0.35);
-  --border-focus: #6366f1;
+  /* Borders */
+  --border-subtle: #eef2f6;
+  --border-default: #e2e8f0;
+  --border-focus: #0c66e4;
 
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
+  /* Typography */
+  --text-title: #0f172a;
+  --text-body: #334155;
+  --text-secondary: #475569;
   --text-muted: #64748b;
-  --text-inverse: #0f172a;
+  --text-light: #94a3b8;
 
-  /* Accent Brand Gradients */
-  --primary-500: #6366f1;
-  --primary-600: #4f46e5;
-  --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  --primary-glow: rgba(99, 102, 241, 0.25);
+  /* Brand Accents - Zoho Royal Blue & Pastels */
+  --primary-50: #eff6ff;
+  --primary-100: #dbeafe;
+  --primary-200: #bfdbfe;
+  --primary-500: #0c66e4;      /* Strong Zoho Royal Blue */
+  --primary-600: #0052cc;
+  --primary-700: #1d4ed8;
+  --primary-gradient: linear-gradient(135deg, #0c66e4 0%, #0052cc 100%);
+  --primary-glow: rgba(12, 102, 228, 0.15);
 
-  /* Semantic Role Colors */
-  --role-admin: #ec4899;
-  --role-admin-bg: rgba(236, 72, 153, 0.12);
-  
-  --role-hr: #10b981;
-  --role-hr-bg: rgba(16, 185, 129, 0.12);
-  
-  --role-sales: #3b82f6;
-  --role-sales-bg: rgba(59, 130, 246, 0.12);
-  
-  --role-support: #f59e0b;
-  --role-support-bg: rgba(245, 158, 11, 0.12);
-  
-  --role-finance: #8b5cf6;
-  --role-finance-bg: rgba(139, 92, 246, 0.12);
+  /* Zoho Product Palette Accents */
+  --zoho-crm: #0c66e4;          /* Royal Blue */
+  --zoho-crm-bg: #eff6ff;
+  --zoho-crm-border: #bfdbfe;
 
-  --danger: #ef4444;
-  --danger-bg: rgba(239, 68, 68, 0.12);
+  --zoho-people: #059669;       /* Emerald Teal */
+  --zoho-people-bg: #ecfdf5;
+  --zoho-people-border: #a7f3d0;
 
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.45);
-  --shadow-glow: 0 0 25px rgba(99, 102, 241, 0.25);
+  --zoho-desk: #ea580c;         /* Vibrant Amber / Orange */
+  --zoho-desk-bg: #fff7ed;
+  --zoho-desk-border: #fed7aa;
 
+  --zoho-books: #7c3aed;        /* Violet / Purple */
+  --zoho-books-bg: #f5f3ff;
+  --zoho-books-border: #ddd6fe;
+
+  --role-admin: #db2777;        /* Pink / Rose */
+  --role-admin-bg: #fdf2f8;
+  --role-admin-border: #fbcfe8;
+
+  /* Status Colors */
+  --success: #16a34a;
+  --success-bg: #f0fdf4;
+  --success-border: #bbf7d0;
+
+  --warning: #d97706;
+  --warning-bg: #fffbeb;
+  --warning-border: #fde68a;
+
+  --danger: #dc2626;
+  --danger-bg: #fef2f2;
+  --danger-border: #fecaca;
+
+  /* Shadows - Very subtle enterprise SaaS depth */
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-sm: 0 2px 4px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
+  --shadow-md: 0 10px 25px -3px rgba(15, 23, 42, 0.06), 0 4px 10px -2px rgba(15, 23, 42, 0.03);
+  --shadow-lg: 0 20px 40px -10px rgba(15, 23, 42, 0.08), 0 8px 16px -4px rgba(15, 23, 42, 0.04);
+  --shadow-elevated: 0 25px 50px -12px rgba(12, 102, 228, 0.12);
+
+  /* Radius */
   --radius-sm: 8px;
   --radius-md: 12px;
-  --radius-lg: 18px;
+  --radius-lg: 16px;
   --radius-xl: 24px;
   --radius-full: 9999px;
 
@@ -65,35 +96,35 @@
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--bg-main);
-  color: var(--text-primary);
+  background-color: var(--bg-page);
+  color: var(--text-body);
   min-height: 100vh;
-  line-height: 1.5;
-  background-image: 
-    radial-gradient(at 10% 10%, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
-    radial-gradient(at 90% 20%, rgba(236, 72, 153, 0.06) 0px, transparent 50%),
-    radial-gradient(at 50% 80%, rgba(16, 185, 129, 0.05) 0px, transparent 50%);
-  background-attachment: fixed;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  background-image: 
+    radial-gradient(at 15% 10%, rgba(219, 234, 254, 0.45) 0px, transparent 40%),
+    radial-gradient(at 85% 15%, rgba(245, 243, 255, 0.5) 0px, transparent 45%),
+    radial-gradient(at 50% 90%, rgba(236, 254, 255, 0.35) 0px, transparent 40%);
+  background-attachment: fixed;
 }
 
-/* Scrollbar Customization */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg-main);
+  background: #f1f5f9;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #cbd5e1;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #94a3b8;
 }
 
-/* Base Layout & Containers */
+/* Layout Containers */
 .app-container {
   display: flex;
   flex-direction: column;
@@ -102,142 +133,139 @@ body {
 
 .main-content {
   flex: 1;
-  max-width: 1380px;
+  max-width: 1280px;
   width: 100%;
   margin: 0 auto;
-  padding: 2rem 1.5rem 4rem;
+  padding: 2.5rem 1.5rem 5rem;
 }
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-  color: var(--text-primary);
+  color: var(--text-title);
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
 }
 
 p {
   color: var(--text-secondary);
 }
 
-/* Glass Card */
-.glass-panel {
-  background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  transition: var(--transition);
-}
-
-.glass-panel:hover {
-  border-color: rgba(255, 255, 255, 0.14);
-}
-
-/* Navbar */
-.navbar {
+/* Zoho-Style Navigation Header */
+.zoho-navbar {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(10, 15, 29, 0.82);
-  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-subtle);
-  padding: 0.85rem 1.5rem;
+  padding: 0.9rem 2rem;
+  box-shadow: var(--shadow-xs);
 }
 
-.navbar-inner {
-  max-width: 1380px;
+.zoho-navbar-inner {
+  max-width: 1320px;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.brand-logo {
+.portal-brand {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.85rem;
   text-decoration: none;
-  color: var(--text-primary);
+  cursor: pointer;
 }
 
-.brand-icon {
+.portal-brand-symbol {
   width: 38px;
   height: 38px;
-  border-radius: var(--radius-md);
+  border-radius: 10px;
   background: var(--primary-gradient);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--shadow-glow);
-  color: #fff;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(12, 102, 228, 0.25);
 }
 
-.brand-title {
+.portal-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.portal-brand-title {
   font-size: 1.15rem;
   font-weight: 800;
-  letter-spacing: -0.03em;
-  background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--text-title);
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
-.brand-subtitle {
+.portal-brand-subtitle {
   font-size: 0.7rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  letter-spacing: 0.05em;
+  font-weight: 600;
+  color: var(--primary-500);
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
-.nav-links {
+/* Nav links */
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+}
+
+.nav-item:hover {
+  color: var(--primary-500);
+  background: var(--primary-50);
+}
+
+.nav-item.active {
+  color: var(--primary-500);
+  background: var(--primary-50);
+  font-weight: 700;
+}
+
+.nav-actions {
   display: flex;
   align-items: center;
   gap: 1.25rem;
 }
 
-.nav-link {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  text-decoration: none;
-  padding: 0.5rem 0.85rem;
-  border-radius: var(--radius-sm);
+/* Clean White SaaS Cards */
+.saas-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
   transition: var(--transition);
 }
 
-.nav-link:hover, .nav-link.active {
-  color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.nav-link.active {
-  color: var(--primary-500);
-  background: rgba(99, 102, 241, 0.1);
-  border: 1px solid rgba(99, 102, 241, 0.2);
-}
-
-.user-profile-menu {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.user-avatar-badge {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 0.85rem;
-  color: #fff;
-  box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+.saas-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: var(--shadow-md);
 }
 
 /* Badges */
@@ -250,49 +278,61 @@ p {
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.02em;
-  text-transform: uppercase;
+  line-height: 1;
 }
 
 .badge-Admin {
   background: var(--role-admin-bg);
   color: var(--role-admin);
-  border: 1px solid rgba(236, 72, 153, 0.3);
+  border: 1px solid var(--role-admin-border);
 }
 
 .badge-HR {
-  background: var(--role-hr-bg);
-  color: var(--role-hr);
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  background: var(--zoho-people-bg);
+  color: var(--zoho-people);
+  border: 1px solid var(--zoho-people-border);
 }
 
 .badge-Sales {
-  background: var(--role-sales-bg);
-  color: var(--role-sales);
-  border: 1px solid rgba(59, 130, 246, 0.3);
+  background: var(--zoho-crm-bg);
+  color: var(--zoho-crm);
+  border: 1px solid var(--zoho-crm-border);
 }
 
 .badge-Support {
-  background: var(--role-support-bg);
-  color: var(--role-support);
-  border: 1px solid rgba(245, 158, 11, 0.3);
+  background: var(--zoho-desk-bg);
+  color: var(--zoho-desk);
+  border: 1px solid var(--zoho-desk-border);
 }
 
 .badge-Finance {
-  background: var(--role-finance-bg);
-  color: var(--role-finance);
-  border: 1px solid rgba(139, 92, 246, 0.3);
+  background: var(--zoho-books-bg);
+  color: var(--zoho-books);
+  border: 1px solid var(--zoho-books-border);
 }
 
-.badge-live {
-  background: rgba(16, 185, 129, 0.15);
-  color: #10b981;
-  border: 1px solid rgba(16, 185, 129, 0.4);
+.badge-success {
+  background: var(--success-bg);
+  color: var(--success);
+  border: 1px solid var(--success-border);
 }
 
-.badge-demo {
-  background: rgba(245, 158, 11, 0.15);
-  color: #f59e0b;
-  border: 1px solid rgba(245, 158, 11, 0.4);
+.badge-warning {
+  background: var(--warning-bg);
+  color: var(--warning);
+  border: 1px solid var(--warning-border);
+}
+
+.badge-danger {
+  background: var(--danger-bg);
+  color: var(--danger);
+  border: 1px solid var(--danger-border);
+}
+
+.badge-neutral {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
 }
 
 /* Buttons */
@@ -301,15 +341,16 @@ p {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.65rem 1.25rem;
+  padding: 0.7rem 1.4rem;
   font-family: var(--font-sans);
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   font-weight: 600;
   border-radius: var(--radius-md);
   border: 1px solid transparent;
   cursor: pointer;
   transition: var(--transition);
   text-decoration: none;
+  line-height: 1.25;
 }
 
 .btn:active {
@@ -317,364 +358,656 @@ p {
 }
 
 .btn-primary {
-  background: var(--primary-gradient);
+  background: var(--primary-500);
   color: #ffffff;
-  box-shadow: var(--shadow-glow);
+  box-shadow: 0 4px 14px rgba(12, 102, 228, 0.25);
 }
 
 .btn-primary:hover {
-  filter: brightness(1.1);
-  box-shadow: 0 0 30px rgba(99, 102, 241, 0.45);
+  background: var(--primary-600);
+  box-shadow: 0 6px 20px rgba(12, 102, 228, 0.35);
+  transform: translateY(-1px);
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--text-primary);
-  border: 1px solid var(--border-subtle);
+  background: #ffffff;
+  color: var(--text-title);
+  border: 1px solid var(--border-default);
+  box-shadow: var(--shadow-xs);
 }
 
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.2);
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: var(--primary-500);
+}
+
+.btn-outline-primary {
+  background: var(--primary-50);
+  color: var(--primary-500);
+  border: 1px solid var(--primary-200);
+}
+
+.btn-outline-primary:hover {
+  background: var(--primary-100);
+  border-color: var(--primary-500);
+}
+
+.btn-sm {
+  padding: 0.45rem 0.85rem;
+  font-size: 0.825rem;
+  border-radius: var(--radius-sm);
+}
+
+.btn-lg {
+  padding: 0.9rem 1.85rem;
+  font-size: 1rem;
+  border-radius: var(--radius-lg);
 }
 
 .btn-danger {
   background: var(--danger-bg);
   color: var(--danger);
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  border: 1px solid var(--danger-border);
 }
 
 .btn-danger:hover {
-  background: rgba(239, 68, 68, 0.2);
+  background: #fee2e2;
 }
 
-.btn-sm {
-  padding: 0.4rem 0.75rem;
-  font-size: 0.8rem;
-  border-radius: var(--radius-sm);
-}
-
-/* Inputs & Form Controls */
+/* Forms & Inputs */
 .form-group {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
   margin-bottom: 1.25rem;
+  text-align: left;
 }
 
 .form-label {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--text-title);
 }
 
 .form-input, .form-select {
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.8rem 1rem;
   background: var(--bg-input);
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
-  color: var(--text-primary);
+  color: var(--text-title);
   font-family: var(--font-sans);
   font-size: 0.925rem;
   outline: none;
   transition: var(--transition);
+  box-shadow: var(--shadow-xs);
 }
 
 .form-input:focus, .form-select:focus {
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+  box-shadow: 0 0 0 3px rgba(12, 102, 228, 0.15);
 }
 
-.form-select option {
-  background: #0f172a;
-  color: #fff;
+.form-input::placeholder {
+  color: #94a3b8;
 }
 
-/* Zoho App Cards Grid */
-.apps-grid {
+/* Landing / Hero Layout */
+.landing-hero {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 5rem;
+  display: grid;
+  grid-template-columns: 1.15fr 0.95fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.landing-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.hero-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.9rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-full);
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: var(--primary-500);
+  box-shadow: var(--shadow-xs);
+  width: fit-content;
+}
+
+.hero-headline {
+  font-size: clamp(2.4rem, 4.2vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  color: var(--text-title);
+}
+
+.hero-headline-accent {
+  color: var(--primary-500);
+  display: inline-block;
+  position: relative;
+}
+
+.hero-supporting {
+  font-size: 1.15rem;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  max-width: 540px;
+}
+
+.hero-statement {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* 4 Mini App Cards on Hero */
+.hero-apps-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  max-width: 520px;
+}
+
+.hero-app-mini {
+  background: #ffffff;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: var(--shadow-xs);
+  transition: var(--transition);
+}
+
+.hero-app-mini:hover {
+  border-color: #cbd5e1;
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-2px);
+}
+
+.hero-app-mini-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* 3 Feature Highlights */
+.hero-features-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.hero-feature-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.hero-feature-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-title);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.hero-feature-desc {
+  font-size: 0.775rem;
+  color: var(--text-muted);
+}
+
+/* Right Side Login Card */
+.login-card-container {
+  background: #ffffff;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: 2.75rem 2.25rem;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+}
+
+.login-card-header {
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.login-card-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--text-title);
+  margin-bottom: 0.35rem;
+}
+
+.login-card-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+/* Demo Switcher Accordion / Dropdown */
+.demo-account-accordion {
+  margin-top: 1.75rem;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface-subtle);
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.demo-account-accordion-trigger {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-title);
+  transition: var(--transition);
+}
+
+.demo-account-accordion-trigger:hover {
+  background: #f1f5f9;
+}
+
+.demo-account-list {
+  padding: 0.5rem 0.75rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.demo-account-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 0.85rem;
+  background: #ffffff;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: left;
+}
+
+.demo-account-item:hover {
+  border-color: var(--primary-500);
+  background: var(--primary-50);
+  transform: translateX(2px);
+}
+
+/* Zero Zoho Credential Notice */
+.zero-credential-banner {
+  margin-top: 1.5rem;
+  padding: 0.85rem 1rem;
+  background: #f0fdf4;
+  border: 1px solid var(--success-border);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  text-align: left;
+}
+
+.zero-credential-banner-text {
+  font-size: 0.785rem;
+  color: #166534;
+  line-height: 1.5;
+}
+
+/* Dashboard Layout */
+.dashboard-hero {
+  background: #ffffff;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: 2.25rem 2.5rem;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.dashboard-hero-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-title);
+  margin-bottom: 0.35rem;
+}
+
+.dashboard-hero-sub {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+}
+
+/* Application Cards Grid */
+.saas-apps-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1.5rem;
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
 }
 
-.app-card {
-  position: relative;
-  padding: 1.75rem;
+.saas-app-card {
+  background: #ffffff;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border-radius: var(--radius-lg);
-  background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
   transition: var(--transition);
+  position: relative;
   overflow: hidden;
 }
 
-.app-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--card-accent, var(--primary-500));
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.4), 0 0 24px var(--card-glow, rgba(99, 102, 241, 0.2));
-}
-
-.app-card.locked {
-  opacity: 0.45;
-  filter: grayscale(0.65);
-  cursor: not-allowed;
-}
-
-.app-card.locked:hover {
-  transform: none;
+.saas-app-card:hover {
+  transform: translateY(-3px);
+  border-color: #cbd5e1;
   box-shadow: var(--shadow-md);
 }
 
-.app-header {
+.saas-app-card.locked {
+  background: #f8fafc;
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.saas-app-card.locked:hover {
+  transform: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.saas-app-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   margin-bottom: 1.25rem;
 }
 
-.app-icon-wrap {
+.saas-app-icon {
   width: 52px;
   height: 52px;
-  border-radius: var(--radius-md);
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-sm);
 }
 
-.app-title {
-  font-size: 1.25rem;
-  font-weight: 700;
+.saas-app-name {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-title);
   margin-bottom: 0.25rem;
 }
 
-.app-category {
-  font-size: 0.775rem;
+.saas-app-dept {
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
-.app-description {
-  font-size: 0.875rem;
+.saas-app-desc {
+  font-size: 0.925rem;
+  color: var(--text-secondary);
   line-height: 1.6;
-  color: var(--text-secondary);
-  margin-bottom: 1.5rem;
+  margin: 1rem 0 1.5rem;
 }
 
-.app-features {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-bottom: 1.5rem;
-}
-
-.feature-pill {
-  font-size: 0.725rem;
-  padding: 0.2rem 0.55rem;
-  border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-secondary);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.app-actions {
+.saas-app-actions {
   display: flex;
   gap: 0.75rem;
+  margin-top: auto;
+}
+
+/* Access Control Visualization ("Your Access") */
+.access-viz-container {
+  background: #ffffff;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+  margin: 3rem 0;
+}
+
+.access-viz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.access-viz-item {
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-default);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-surface-subtle);
+  transition: var(--transition);
+}
+
+.access-viz-item.authorized {
+  background: #f0fdf4;
+  border-color: var(--success-border);
+}
+
+.access-viz-item.restricted {
+  background: #f8fafc;
+  opacity: 0.65;
+}
+
+/* Modern Clean Tables */
+.table-card {
+  background: #ffffff;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.saas-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.saas-table th {
+  background: #f8fafc;
+  padding: 0.9rem 1.25rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  font-size: 0.775rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--border-default);
+}
+
+.saas-table td {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-title);
+  vertical-align: middle;
+}
+
+.saas-table tr:hover td {
+  background: #f8fafc;
 }
 
 /* Modals */
-.modal-backdrop {
+.modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(7, 10, 19, 0.8);
+  background: rgba(15, 23, 42, 0.45);
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 100;
   padding: 1.5rem;
+  animation: modalFadeIn 0.2s ease-out;
 }
 
-.modal-content {
-  background: #0f172a;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+.modal-window {
+  background: #ffffff;
+  border: 1px solid var(--border-default);
   border-radius: var(--radius-xl);
   max-width: 800px;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: var(--shadow-lg);
-  animation: modalIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: modalScaleUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes modalIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.modal-header {
-  padding: 1.5rem 1.75rem;
+@keyframes modalScaleUp {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-header-clean {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--border-subtle);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--border-subtle);
 }
 
-.modal-body {
-  padding: 1.75rem;
+.modal-body-clean {
+  padding: 2rem;
 }
 
-.modal-footer {
-  padding: 1.25rem 1.75rem;
+.modal-footer-clean {
+  padding: 1.25rem 2rem;
+  border-top: 1px solid var(--border-subtle);
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 0.75rem;
-  border-top: 1px solid var(--border-subtle);
+  background: #f8fafc;
 }
 
-/* Tables */
-.table-container {
-  overflow-x: auto;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-subtle);
-}
-
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-  font-size: 0.875rem;
-}
-
-.data-table th {
-  background: rgba(15, 23, 42, 0.8);
-  padding: 0.85rem 1rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  border-bottom: 1px solid var(--border-subtle);
-  letter-spacing: 0.02em;
-}
-
-.data-table td {
-  padding: 0.85rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-  color: var(--text-primary);
-}
-
-.data-table tr:hover td {
-  background: rgba(255, 255, 255, 0.02);
-}
-
-/* Tabs */
-.tabs-nav {
+/* Clean Admin Tabs */
+.admin-tabs {
   display: flex;
   gap: 0.5rem;
-  border-bottom: 1px solid var(--border-subtle);
-  margin-bottom: 1.75rem;
+  border-bottom: 1px solid var(--border-default);
+  margin-bottom: 2rem;
 }
 
-.tab-btn {
+.admin-tab-btn {
+  padding: 0.9rem 1.25rem;
   background: transparent;
   border: none;
-  color: var(--text-secondary);
+  border-bottom: 2px solid transparent;
   font-family: var(--font-sans);
   font-size: 0.925rem;
   font-weight: 600;
-  padding: 0.85rem 1.25rem;
+  color: var(--text-muted);
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  position: relative;
   transition: var(--transition);
 }
 
-.tab-btn:hover {
-  color: var(--text-primary);
-}
-
-.tab-btn.active {
+.admin-tab-btn:hover {
   color: var(--primary-500);
 }
 
-.tab-btn.active::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--primary-500);
-  border-radius: 2px 2px 0 0;
-  box-shadow: 0 0 10px var(--primary-500);
+.admin-tab-btn.active {
+  color: var(--primary-500);
+  border-bottom-color: var(--primary-500);
+  font-weight: 700;
 }
 
-/* Quick Demo Login Grid */
-.demo-accounts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 0.75rem;
-  margin-top: 1rem;
+/* Quick Demo Switcher Floating Bar */
+.demo-switcher-dock {
+  background: #ffffff;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: 1.25rem 1.75rem;
+  box-shadow: var(--shadow-md);
+  margin-top: 3rem;
 }
 
-.demo-account-card {
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 0.85rem 1rem;
-  text-align: left;
-  cursor: pointer;
-  transition: var(--transition);
+/* Animations */
+.spin {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-.demo-account-card:hover {
-  background: rgba(30, 41, 59, 0.8);
-  border-color: rgba(99, 102, 241, 0.4);
-  transform: translateY(-2px);
-}
-
-/* Code Snippet / JSON Preview */
-.json-viewer {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  background: #090d16;
-  padding: 1rem;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-subtle);
-  max-height: 280px;
-  overflow: auto;
-  color: #38bdf8;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .main-content {
-    padding: 1rem;
+/* Mobile Responsiveness */
+@media (max-width: 960px) {
+  .landing-hero {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: 2rem 1rem;
   }
-  .apps-grid {
+  .hero-apps-grid {
     grid-template-columns: 1fr;
   }
-  .navbar-inner {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: flex-start;
+  .hero-features-row {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
   }
-  .tabs-nav {
-    overflow-x: auto;
+  .saas-apps-grid {
+    grid-template-columns: 1fr;
+  }
+  .zoho-navbar-inner {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .dashboard-hero {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

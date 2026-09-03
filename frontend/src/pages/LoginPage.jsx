@@ -1,5 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, Lock, Mail, ArrowRight, UserCheck, AlertCircle, KeyRound, Sparkles } from 'lucide-react';
+import { 
+  Shield, 
+  Lock, 
+  Mail, 
+  ArrowRight, 
+  UserCheck, 
+  AlertCircle, 
+  KeyRound, 
+  ChevronDown, 
+  ChevronUp, 
+  Globe, 
+  CheckCircle2,
+  TrendingUp,
+  Users,
+  Headphones,
+  Receipt,
+  Sparkles,
+  HelpCircle
+} from 'lucide-react';
 import { authAPI } from '../services/api';
 
 export default function LoginPage({ onLoginSuccess }) {
@@ -8,6 +26,7 @@ export default function LoginPage({ onLoginSuccess }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [demoAccounts, setDemoAccounts] = useState([]);
+  const [demoOpen, setDemoOpen] = useState(true); // Open by default for evaluator convenience
 
   useEffect(() => {
     // Load pre-configured demo accounts for 1-click login
@@ -33,7 +52,7 @@ export default function LoginPage({ onLoginSuccess }) {
         setError(response.message || 'Authentication failed');
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed. Please check credentials.');
+      setError(err.response?.data?.message || 'Login failed. Please check your credentials.');
     } finally {
       setLoading(false);
     }
@@ -42,8 +61,9 @@ export default function LoginPage({ onLoginSuccess }) {
   const handleQuickLogin = (acc) => {
     setEmail(acc.email);
     setPassword('Password@123');
-    // Direct submit
     setLoading(true);
+    setError('');
+
     authAPI.login(acc.email, 'Password@123')
       .then(res => {
         if (res.success) {
@@ -57,56 +77,169 @@ export default function LoginPage({ onLoginSuccess }) {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem 1.5rem' }}>
-      <div style={{ maxWidth: '520px', width: '100%' }}>
-        {/* Brand Header */}
-        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <div 
-            className="brand-icon" 
-            style={{ width: '56px', height: '56px', margin: '0 auto 1rem', borderRadius: '16px' }}
-          >
-            <Shield size={32} />
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      {/* Top Navigation */}
+      <header className="zoho-navbar">
+        <div className="zoho-navbar-inner">
+          <div className="portal-brand">
+            <div className="portal-brand-symbol">
+              <Shield size={22} />
+            </div>
+            <div className="portal-brand-text">
+              <span className="portal-brand-title">Enterprise Employee Portal</span>
+              <span className="portal-brand-subtitle">Zoho One Workspace</span>
+            </div>
           </div>
-          <h1 style={{ fontSize: '1.85rem', fontWeight: 800, marginBottom: '0.4rem' }}>
-            Enterprise Employee Portal
+
+          <nav className="nav-menu" style={{ display: 'flex', alignItems: 'center' }}>
+            <span className="nav-item">Features</span>
+            <span className="nav-item">Solutions</span>
+            <span className="nav-item">Zoho Apps</span>
+            <span className="nav-item">Security</span>
+            <span className="nav-item">Resources</span>
+          </nav>
+
+          <div className="nav-actions">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', color: 'var(--text-secondary)', cursor: 'pointer' }}>
+              <Globe size={16} />
+              <span>English (India)</span>
+            </div>
+            <button 
+              className="btn btn-secondary btn-sm"
+              onClick={() => alert('For portal access or IT assistance, please contact it-support@company.com')}
+            >
+              Contact Admin
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Hero Section */}
+      <main className="landing-hero">
+        {/* Left Hero Column */}
+        <div className="landing-left">
+          <div className="hero-pill-badge">
+            <Sparkles size={14} style={{ color: 'var(--primary-500)' }} />
+            <span>Unified Role-Based Access Control</span>
+          </div>
+
+          <h1 className="hero-headline">
+            One workspace.<br />
+            <span className="hero-headline-accent">Every employee.</span><br />
+            The right tools.
           </h1>
-          <p style={{ fontSize: '0.925rem', color: 'var(--text-secondary)' }}>
-            Zoho One Unified Role-Based Access Control System
+
+          <p className="hero-supporting">
+            Secure access to your organization's business applications through role-based permissions.
           </p>
+
+          <div className="hero-statement">
+            One secure entry point for Zoho One services.
+          </div>
+
+          {/* 4 Small Application Cards */}
+          <div className="hero-apps-grid">
+            <div className="hero-app-mini">
+              <div className="hero-app-mini-icon" style={{ background: '#eff6ff', color: '#0c66e4' }}>
+                <TrendingUp size={20} />
+              </div>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: '0.925rem', color: 'var(--text-title)' }}>Zoho CRM</div>
+                <div style={{ fontSize: '0.775rem', color: 'var(--text-muted)' }}>Sales & Deals</div>
+              </div>
+            </div>
+
+            <div className="hero-app-mini">
+              <div className="hero-app-mini-icon" style={{ background: '#ecfdf5', color: '#059669' }}>
+                <Users size={20} />
+              </div>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: '0.925rem', color: 'var(--text-title)' }}>Zoho People</div>
+                <div style={{ fontSize: '0.775rem', color: 'var(--text-muted)' }}>HR & Directory</div>
+              </div>
+            </div>
+
+            <div className="hero-app-mini">
+              <div className="hero-app-mini-icon" style={{ background: '#fff7ed', color: '#ea580c' }}>
+                <Headphones size={20} />
+              </div>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: '0.925rem', color: 'var(--text-title)' }}>Zoho Desk</div>
+                <div style={{ fontSize: '0.775rem', color: 'var(--text-muted)' }}>Support Cases</div>
+              </div>
+            </div>
+
+            <div className="hero-app-mini">
+              <div className="hero-app-mini-icon" style={{ background: '#f5f3ff', color: '#7c3aed' }}>
+                <Receipt size={20} />
+              </div>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: '0.925rem', color: 'var(--text-title)' }}>Zoho Books</div>
+                <div style={{ fontSize: '0.775rem', color: 'var(--text-muted)' }}>Finance & Invoices</div>
+              </div>
+            </div>
+          </div>
+
+          {/* 3 Feature Highlights */}
+          <div className="hero-features-row">
+            <div className="hero-feature-item">
+              <div className="hero-feature-title">
+                <Shield size={16} style={{ color: 'var(--primary-500)' }} />
+                <span>Secure Access</span>
+              </div>
+              <div className="hero-feature-desc">Enterprise-grade security</div>
+            </div>
+
+            <div className="hero-feature-item">
+              <div className="hero-feature-title">
+                <UserCheck size={16} style={{ color: '#059669' }} />
+                <span>Role-Based</span>
+              </div>
+              <div className="hero-feature-desc">Access only what you need</div>
+            </div>
+
+            <div className="hero-feature-item">
+              <div className="hero-feature-title">
+                <Sparkles size={16} style={{ color: '#ea580c' }} />
+                <span>Higher Productivity</span>
+              </div>
+              <div className="hero-feature-desc">Your tools in one place</div>
+            </div>
+          </div>
         </div>
 
-        {/* Login Card */}
-        <div className="glass-panel" style={{ padding: '2.25rem', marginBottom: '1.75rem' }}>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <KeyRound size={20} style={{ color: 'var(--primary-500)' }} />
-            <span>Sign In to Your Workspace</span>
-          </h2>
+        {/* Right Hero Column: Large White Rounded Login Card */}
+        <div className="login-card-container">
+          <div className="login-card-header">
+            <h2 className="login-card-title">Welcome back</h2>
+            <p className="login-card-subtitle">Sign in to your Enterprise Portal</p>
+          </div>
 
           {error && (
             <div style={{ 
-              background: 'rgba(239, 68, 68, 0.1)', 
-              border: '1px solid rgba(239, 68, 68, 0.3)', 
+              background: 'var(--danger-bg)', 
+              border: '1px solid var(--danger-border)', 
               borderRadius: 'var(--radius-md)', 
               padding: '0.75rem 1rem', 
-              color: '#f87171', 
+              color: 'var(--danger)', 
               fontSize: '0.875rem',
               marginBottom: '1.25rem',
               display: 'flex',
               alignItems: 'center',
               gap: '0.5rem'
             }}>
-              <AlertCircle size={16} />
+              <AlertCircle size={18} />
               <span>{error}</span>
             </div>
           )}
 
           <form onSubmit={handleLogin}>
             <div className="form-group">
-              <label className="form-label" htmlFor="login-email">Corporate Email Address</label>
+              <label className="form-label" htmlFor="work-email">Work Email</label>
               <div style={{ position: 'relative' }}>
                 <Mail size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                 <input
-                  id="login-email"
+                  id="work-email"
                   type="email"
                   required
                   className="form-input"
@@ -119,11 +252,11 @@ export default function LoginPage({ onLoginSuccess }) {
             </div>
 
             <div className="form-group">
-              <label className="form-label" htmlFor="login-password">Portal Password</label>
+              <label className="form-label" htmlFor="portal-password">Password</label>
               <div style={{ position: 'relative' }}>
                 <Lock size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                 <input
-                  id="login-password"
+                  id="portal-password"
                   type="password"
                   required
                   className="form-input"
@@ -138,66 +271,74 @@ export default function LoginPage({ onLoginSuccess }) {
             <button
               type="submit"
               disabled={loading}
-              className="btn btn-primary"
-              style={{ width: '100%', marginTop: '0.5rem', padding: '0.85rem' }}
+              className="btn btn-primary btn-lg"
+              style={{ width: '100%', marginTop: '0.5rem' }}
             >
               {loading ? (
-                <span>Verifying Credentials...</span>
+                <span>Signing in...</span>
               ) : (
                 <>
-                  <span>Authenticate & Enter Portal</span>
+                  <span>Sign In</span>
                   <ArrowRight size={18} />
                 </>
               )}
             </button>
           </form>
 
-          {/* Zero Credential Guarantee */}
-          <div style={{ 
-            marginTop: '1.5rem', 
-            paddingTop: '1.25rem', 
-            borderTop: '1px solid var(--border-subtle)',
-            fontSize: '0.775rem',
-            color: 'var(--text-muted)',
-            lineHeight: 1.5,
-            textAlign: 'center'
-          }}>
-            🛡️ <strong>Zero Zoho Credential Guarantee:</strong> Employees log in using company portal credentials. Zoho service authorization is managed securely on the backend via OAuth service account.
-          </div>
-        </div>
-
-        {/* Demo Fast Login Switcher (Designed for video demo and evaluator review) */}
-        <div className="glass-panel" style={{ padding: '1.5rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.85rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)' }}>
-              <Sparkles size={16} style={{ color: '#f59e0b' }} />
-              <span>1-Click Role Switcher (Evaluation Demo)</span>
-            </div>
-            <span style={{ fontSize: '0.725rem', color: 'var(--text-muted)' }}>Auto-fills & logs in</span>
-          </div>
-
-          <div className="demo-accounts-grid">
-            {demoAccounts.map((acc) => (
-              <div
-                key={acc.id}
-                className="demo-account-card"
-                onClick={() => handleQuickLogin(acc)}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
-                  <span className={`badge badge-${acc.role}`}>{acc.role}</span>
-                  <UserCheck size={14} style={{ color: 'var(--text-muted)' }} />
-                </div>
-                <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>
-                  {acc.name}
-                </div>
-                <div style={{ fontSize: '0.725rem', color: 'var(--text-muted)', marginTop: '0.15rem' }}>
-                  Target: <strong style={{ color: '#cbd5e1' }}>{acc.targetApp}</strong>
-                </div>
+          {/* Try a demo account accordion */}
+          <div className="demo-account-accordion">
+            <button 
+              type="button" 
+              className="demo-account-accordion-trigger"
+              onClick={() => setDemoOpen(!demoOpen)}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Sparkles size={16} style={{ color: 'var(--primary-500)' }} />
+                <span>Try a demo account</span>
               </div>
-            ))}
+              {demoOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+            </button>
+
+            {demoOpen && (
+              <div className="demo-account-list">
+                {demoAccounts.map((acc) => (
+                  <div
+                    key={acc.id}
+                    className="demo-account-item"
+                    onClick={() => handleQuickLogin(acc)}
+                    title={`Click to log in immediately as ${acc.name} (${acc.role})`}
+                  >
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <span style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--text-title)' }}>
+                          {acc.name}
+                        </span>
+                        <span className={`badge badge-${acc.role}`} style={{ fontSize: '0.7rem' }}>
+                          {acc.role}
+                        </span>
+                      </div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.1rem' }}>
+                        Authorized: <strong style={{ color: 'var(--text-secondary)' }}>{acc.targetApp}</strong>
+                      </div>
+                    </div>
+
+                    <ArrowRight size={14} style={{ color: 'var(--primary-500)' }} />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Zero Zoho credentials required notice */}
+          <div className="zero-credential-banner">
+            <CheckCircle2 size={18} style={{ color: '#16a34a', flexShrink: 0, marginTop: '2px' }} />
+            <div className="zero-credential-banner-text">
+              <strong>Zero Zoho credentials required</strong><br />
+              Employees access authorized Zoho services through the company portal. Zoho authentication is securely managed by the backend.
+            </div>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

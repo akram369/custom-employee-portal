@@ -1,72 +1,115 @@
 import React from 'react';
-import { Shield, LayoutDashboard, Settings, LogOut, KeyRound, ExternalLink } from 'lucide-react';
-import { authUtil } from '../utils/auth';
+import { 
+  Shield, 
+  LayoutDashboard, 
+  Grid, 
+  Activity, 
+  Settings, 
+  LogOut, 
+  CheckCircle2 
+} from 'lucide-react';
 
 export default function Navbar({ currentUser, onLogout, currentView, setCurrentView }) {
   const isAdmin = currentUser?.roles?.includes('Admin');
+  const userRole = currentUser?.roles?.[0] || 'Employee';
 
   return (
-    <header className="navbar">
-      <div className="navbar-inner">
-        {/* Brand */}
-        <div className="brand-logo" style={{ cursor: 'pointer' }} onClick={() => setCurrentView('dashboard')}>
-          <div className="brand-icon">
+    <header className="zoho-navbar">
+      <div className="zoho-navbar-inner">
+        {/* Brand Logo */}
+        <div className="portal-brand" onClick={() => setCurrentView('dashboard')}>
+          <div className="portal-brand-symbol">
             <Shield size={22} />
           </div>
-          <div>
-            <div className="brand-title">WavePortal</div>
-            <div className="brand-subtitle">Zoho One Enterprise RBAC</div>
+          <div className="portal-brand-text">
+            <span className="portal-brand-title">Enterprise Portal</span>
+            <span className="portal-brand-subtitle">Zoho One Workspace</span>
           </div>
         </div>
 
         {/* Center Nav Links */}
-        <nav className="nav-links">
+        <nav className="nav-menu">
           <button
-            className={`nav-link ${currentView === 'dashboard' ? 'active' : ''}`}
+            className={`nav-item ${currentView === 'dashboard' ? 'active' : ''}`}
             onClick={() => setCurrentView('dashboard')}
           >
-            <LayoutDashboard size={18} />
+            <LayoutDashboard size={16} />
             <span>Dashboard</span>
+          </button>
+
+          <button
+            className={`nav-item ${currentView === 'applications' ? 'active' : ''}`}
+            onClick={() => setCurrentView('applications')}
+          >
+            <Grid size={16} />
+            <span>Applications</span>
+          </button>
+
+          <button
+            className={`nav-item ${currentView === 'activity' ? 'active' : ''}`}
+            onClick={() => setCurrentView('activity')}
+          >
+            <Activity size={16} />
+            <span>Activity</span>
           </button>
 
           {isAdmin && (
             <button
-              className={`nav-link ${currentView === 'admin' ? 'active' : ''}`}
+              className={`nav-item ${currentView === 'admin' ? 'active' : ''}`}
               onClick={() => setCurrentView('admin')}
             >
-              <Settings size={18} />
-              <span>Admin Management</span>
+              <Settings size={16} />
+              <span>Administration</span>
             </button>
           )}
         </nav>
 
-        {/* User Info & Actions */}
-        <div className="user-profile-menu">
-          <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-            <div style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-primary)' }}>
-              {currentUser?.name || 'Employee User'}
+        {/* Right Side User Profile & Status */}
+        <div className="nav-actions">
+          {/* User Profile Card */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div 
+              style={{
+                width: 38,
+                height: 38,
+                borderRadius: '50%',
+                background: 'var(--primary-50)',
+                border: '2px solid var(--primary-200)',
+                color: 'var(--primary-600)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: 700,
+                fontSize: '0.9rem'
+              }}
+            >
+              {currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : 'U'}
             </div>
-            <div style={{ display: 'flex', gap: '0.4rem', marginTop: '0.2rem' }}>
-              {currentUser?.roles?.map((role) => (
-                <span key={role} className={`badge badge-${role}`}>
-                  {role}
+
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <span style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--text-title)' }}>
+                  {currentUser?.name || 'Employee'}
                 </span>
-              ))}
+                <span className={`badge badge-${userRole}`} style={{ fontSize: '0.675rem', padding: '0.15rem 0.5rem' }}>
+                  {userRole}
+                </span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.725rem', color: '#16a34a' }}>
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#16a34a', display: 'inline-block' }} />
+                <span>Online</span>
+              </div>
             </div>
           </div>
 
-          <div className="user-avatar-badge" title={currentUser?.email}>
-            {currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : 'U'}
-          </div>
-
+          {/* Logout Button */}
           <button
             className="btn btn-secondary btn-sm"
             onClick={onLogout}
-            title="Sign out of Employee Portal"
-            style={{ marginLeft: '0.5rem' }}
+            title="Sign out of Enterprise Portal"
           >
-            <LogOut size={16} />
-            <span style={{ display: 'inline' }}>Logout</span>
+            <LogOut size={15} />
+            <span>Logout</span>
           </button>
         </div>
       </div>

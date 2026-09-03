@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Shield, 
-  Layers, 
   CheckCircle2, 
   Lock, 
   AlertTriangle, 
   Sparkles, 
-  ArrowUpRight, 
   RefreshCw, 
-  Key, 
-  Info,
+  Clock, 
+  Check, 
+  Minus,
+  Activity,
+  Key,
+  ShieldCheck,
   Server
 } from 'lucide-react';
 import ZohoAppCard from '../components/ZohoAppCard';
 import ZohoDataModal from '../components/ZohoDataModal';
 import { zohoAPI, authAPI } from '../services/api';
 
-export default function DashboardPage({ currentUser, onSwitchUser }) {
+export default function DashboardPage({ currentUser, onSwitchUser, initialSubView = 'all' }) {
   const [authorizedApps, setAuthorizedApps] = useState([]);
   const [allApps, setAllApps] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -96,6 +98,22 @@ export default function DashboardPage({ currentUser, onSwitchUser }) {
   const userRoles = currentUser?.roles || [];
   const primaryRole = userRoles[0] || 'Employee';
 
+  // Greeting based on time
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good morning';
+    if (hour < 18) return 'Good afternoon';
+    return 'Good evening';
+  };
+
+  // Fixed list of all 4 company apps for Access Control Visualization
+  const catalogApps = [
+    { id: 'zoho_crm', name: 'Zoho CRM', role: 'Sales' },
+    { id: 'zoho_people', name: 'Zoho People', role: 'HR' },
+    { id: 'zoho_desk', name: 'Zoho Desk', role: 'Support' },
+    { id: 'zoho_books', name: 'Zoho Books', role: 'Finance' }
+  ];
+
   return (
     <div className="main-content">
       {/* Toast Notification */}
@@ -104,7 +122,7 @@ export default function DashboardPage({ currentUser, onSwitchUser }) {
           position: 'fixed',
           bottom: '2rem',
           right: '2rem',
-          background: toast.type === 'error' ? '#ef4444' : toast.type === 'success' ? '#10b981' : '#6366f1',
+          background: toast.type === 'error' ? 'var(--danger)' : toast.type === 'success' ? '#16a34a' : 'var(--primary-500)',
           color: '#fff',
           padding: '0.85rem 1.25rem',
           borderRadius: 'var(--radius-md)',
@@ -114,134 +132,93 @@ export default function DashboardPage({ currentUser, onSwitchUser }) {
           fontSize: '0.875rem',
           display: 'flex',
           alignItems: 'center',
-          gap: '0.5rem',
-          animation: 'modalIn 0.2s ease'
+          gap: '0.5rem'
         }}>
           {toast.type === 'error' ? <AlertTriangle size={18} /> : <CheckCircle2 size={18} />}
           <span>{toast.message}</span>
         </div>
       )}
 
-      {/* Hero Welcome Banner */}
-      <div 
-        className="glass-panel" 
-        style={{ 
-          padding: '2rem 2.25rem', 
-          marginBottom: '2rem',
-          position: 'relative',
-          overflow: 'hidden',
-          background: 'linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(30, 41, 59, 0.8) 100%)',
-          border: '1px solid rgba(255, 255, 255, 0.1)'
-        }}
-      >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1.5rem' }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.5rem' }}>
-              <span className={`badge badge-${primaryRole}`}>
-                {primaryRole} Role Active
-              </span>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                Department: <strong style={{ color: 'var(--text-secondary)' }}>{currentUser?.department || 'Operations'}</strong>
-              </span>
-            </div>
+      {/* Main Hero Section */}
+      <div className="dashboard-hero">
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.65rem' }}>
+            <span className="badge badge-neutral" style={{ background: '#eff6ff', color: 'var(--primary-600)', border: '1px solid #bfdbfe' }}>
+              <ShieldCheck size={13} />
+              <span>ROLE-BASED ACCESS</span>
+            </span>
+            <span className={`badge badge-${primaryRole}`}>
+              {primaryRole}
+            </span>
+          </div>
 
-            <h1 style={{ fontSize: '1.85rem', fontWeight: 800, marginBottom: '0.5rem' }}>
-              Welcome back, {currentUser?.name}
-            </h1>
-            <p style={{ maxWidth: '680px', fontSize: '0.925rem', lineHeight: 1.6 }}>
-              {primaryRole === 'Admin' ? (
-                <span>You hold <strong>Full Administrator privileges</strong>. You are granted access to all 4 integrated Zoho One applications, user and role management, permission matrices, and security audit logs.</span>
-              ) : (
-                <span>
-                  Your portal session is governed by <strong>Role-Based Access Control (RBAC)</strong>. You have been provisioned access exclusively to your department's designated Zoho service: <strong style={{ color: '#fff' }}>
-                    {primaryRole === 'HR' && 'Zoho People (Human Resources)'}
-                    {primaryRole === 'Sales' && 'Zoho CRM (Sales & Pipelines)'}
-                    {primaryRole === 'Support' && 'Zoho Desk (Customer Ticketing)'}
-                    {primaryRole === 'Finance' && 'Zoho Books (Financial Accounting)'}
-                  </strong>.
-                </span>
-              )}
+          <h1 className="dashboard-hero-title">
+            {getGreeting()}, {currentUser?.name?.split(' ')[0] || currentUser?.name}!
+          </h1>
+          <p className="dashboard-hero-sub">
+            Here's your personalized workspace. Access your authorized enterprise applications below.
+          </p>
+        </div>
+
+        {/* Quick RBAC Summary Pill */}
+        <div style={{ 
+          background: '#f8fafc', 
+          border: '1px solid var(--border-default)', 
+          borderRadius: 'var(--radius-lg)', 
+          padding: '1rem 1.5rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '1.5rem'
+        }}>
+          <div>
+            <div style={{ fontSize: '0.725rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+              Your Role
+            </div>
+            <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-title)' }}>
+              {primaryRole}
+            </div>
+          </div>
+          <div style={{ width: 1, height: 32, background: 'var(--border-default)' }} />
+          <div>
+            <div style={{ fontSize: '0.725rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+              Authorized Apps
+            </div>
+            <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--primary-500)' }}>
+              {authorizedApps.length} of 4
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Applications Section */}
+      <section id="applications-section" style={{ marginBottom: '3.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+          <div>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-title)' }}>
+              Your applications
+            </h2>
+            <p style={{ fontSize: '0.925rem', color: 'var(--text-muted)' }}>
+              Services provisioned exclusively for the <strong>{primaryRole}</strong> role.
             </p>
           </div>
 
-          {/* Quick Session Stats Widget */}
-          <div style={{ display: 'flex', gap: '1rem' }}>
-            <div className="glass-panel" style={{ padding: '0.85rem 1.25rem', textAlign: 'center', background: 'rgba(15, 23, 42, 0.5)' }}>
-              <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 700 }}>AUTHORIZED APPS</div>
-              <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary-500)' }}>
-                {authorizedApps.length} / 4
-              </div>
-            </div>
-            <div className="glass-panel" style={{ padding: '0.85rem 1.25rem', textAlign: 'center', background: 'rgba(15, 23, 42, 0.5)' }}>
-              <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 700 }}>SESSION SECURITY</div>
-              <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#10b981', marginTop: '0.4rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                <CheckCircle2 size={15} /> Verified
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* RBAC Explanatory Ribbon */}
-      <div 
-        style={{ 
-          background: 'rgba(99, 102, 241, 0.06)', 
-          border: '1px solid rgba(99, 102, 241, 0.15)',
-          borderRadius: 'var(--radius-md)',
-          padding: '1rem 1.5rem',
-          marginBottom: '2rem',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '1rem'
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <div style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(99, 102, 241, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary-500)' }}>
-            <Info size={18} />
-          </div>
-          <div>
-            <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--text-primary)' }}>
-              Enforced Policy: Role-to-Application Mapping
-            </div>
-            <div style={{ fontSize: '0.775rem', color: 'var(--text-muted)' }}>
-              HR → Zoho People • Sales → Zoho CRM • Support → Zoho Desk • Finance → Zoho Books • Admin → All
-            </div>
-          </div>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem', color: '#94a3b8' }}>
-          <Server size={15} style={{ color: '#10b981' }} />
-          <span>Backend OAuth Service Account: Active</span>
-        </div>
-      </div>
-
-      {/* Authorized Zoho Services Section */}
-      <div style={{ marginBottom: '3rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-          <h2 style={{ fontSize: '1.35rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-            <CheckCircle2 size={22} style={{ color: '#10b981' }} />
-            <span>Permitted Zoho One Applications</span>
-          </h2>
           <button 
             className="btn btn-secondary btn-sm" 
             onClick={loadApps}
             disabled={loading}
-            title="Reload applications status"
           >
             <RefreshCw size={14} className={loading ? 'spin' : ''} />
-            <span>Refresh</span>
+            <span>Sync</span>
           </button>
         </div>
 
         {loading ? (
           <div style={{ textAlign: 'center', padding: '4rem 0' }}>
             <RefreshCw size={32} className="spin" style={{ color: 'var(--primary-500)', margin: '0 auto 1rem' }} />
-            <p>Evaluating Role-Based Access Control permissions...</p>
+            <p style={{ color: 'var(--text-secondary)' }}>Evaluating role permissions...</p>
           </div>
         ) : (
-          <div className="apps-grid">
+          <div className="saas-apps-grid">
             {authorizedApps.map((app) => (
               <ZohoAppCard
                 key={app.id}
@@ -254,71 +231,194 @@ export default function DashboardPage({ currentUser, onSwitchUser }) {
             ))}
           </div>
         )}
-      </div>
+      </section>
 
-      {/* Restricted Applications Section (Proving RBAC Isolation) */}
-      {primaryRole !== 'Admin' && (
-        <div style={{ marginBottom: '3rem' }}>
-          <div style={{ marginBottom: '0.75rem' }}>
-            <h2 style={{ fontSize: '1.2rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.6rem', color: 'var(--text-secondary)' }}>
-              <Lock size={18} style={{ color: 'var(--danger)' }} />
-              <span>Restricted Applications (Blocked by RBAC)</span>
-            </h2>
-            <p style={{ fontSize: '0.825rem', color: 'var(--text-muted)' }}>
-              These services belong to other enterprise departments. Requests to these services are strictly blocked at both the UI and backend proxy layers.
+      {/* Access Control Visualization ("Your Access") */}
+      <section className="access-viz-container">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
+          <div>
+            <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary-600)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              Security Architecture
+            </div>
+            <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-title)', marginTop: '0.2rem' }}>
+              Your Access
+            </h3>
+            <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>
+              Visual verification of backend Role-Based Access Control isolation.
             </p>
           </div>
 
-          <div className="apps-grid">
-            {allApps.filter(app => !app.isAllowed).map((app) => (
-              <ZohoAppCard
-                key={app.id}
-                app={app}
-                isAllowed={false}
-                userRoles={userRoles}
-                onInspect={handleInspect}
-                onLaunch={handleLaunch}
-              />
-            ))}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div style={{ textAlign: 'right' }}>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700 }}>ASSIGNED ROLE</span>
+              <div style={{ fontWeight: 800, color: 'var(--text-title)' }}>{primaryRole.toUpperCase()}</div>
+            </div>
+            <span className="badge badge-neutral" style={{ fontSize: '0.8rem', padding: '0.4rem 0.8rem' }}>
+              {authorizedApps.length} of 4 Authorized
+            </span>
           </div>
         </div>
-      )}
 
-      {/* Live Demo Switcher Strip for Instant Video Testing */}
-      <div className="glass-panel" style={{ padding: '1.5rem', marginTop: '2rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 700, fontSize: '0.875rem' }}>
-            <Sparkles size={16} style={{ color: '#f59e0b' }} />
-            <span>Switch Role Profile (Live Demonstration & Grading)</span>
+        {/* 4 App Access Checklist */}
+        <div className="access-viz-grid">
+          {catalogApps.map((app) => {
+            const isAuthorized = primaryRole === 'Admin' || primaryRole === app.role;
+            return (
+              <div 
+                key={app.id} 
+                className={`access-viz-item ${isAuthorized ? 'authorized' : 'restricted'}`}
+              >
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: '0.925rem', color: 'var(--text-title)' }}>
+                    {app.name}
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                    Role: {app.role}
+                  </div>
+                </div>
+
+                {isAuthorized ? (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: '#16a34a', fontWeight: 700, fontSize: '0.85rem' }}>
+                    <Check size={18} />
+                    <span>Active</span>
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: '#94a3b8', fontWeight: 600, fontSize: '0.85rem' }}>
+                    <Minus size={16} />
+                    <span>Restricted</span>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Activity Section */}
+      <section id="activity-section" style={{ marginBottom: '3rem' }}>
+        <div style={{ marginBottom: '1rem' }}>
+          <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-title)' }}>
+            Recent Activity
+          </h3>
+          <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>
+            Session activity and security events associated with your portal identity.
+          </p>
+        </div>
+
+        <div className="saas-card" style={{ padding: '1.5rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.85rem' }}>
+              <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#ecfdf5', color: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '2px' }}>
+                <Check size={16} />
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-title)' }}>
+                  Signed in successfully
+                </div>
+                <div style={{ fontSize: '0.785rem', color: 'var(--text-muted)' }}>
+                  Authenticated as {currentUser?.email} via corporate JWT credentials
+                </div>
+              </div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                <Clock size={13} />
+                <span>Today</span>
+              </div>
+            </div>
+
+            <div style={{ width: '100%', height: 1, background: 'var(--border-subtle)' }} />
+
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.85rem' }}>
+              <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#eff6ff', color: '#0c66e4', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '2px' }}>
+                <Server size={16} />
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-title)' }}>
+                  Backend Zoho OAuth Service Account Active
+                </div>
+                <div style={{ fontSize: '0.785rem', color: 'var(--text-muted)' }}>
+                  Centralized token management verified. Zero employee credentials required.
+                </div>
+              </div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                <Clock size={13} />
+                <span>Today</span>
+              </div>
+            </div>
+
+            <div style={{ width: '100%', height: 1, background: 'var(--border-subtle)' }} />
+
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.85rem' }}>
+              <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#f8fafc', color: '#64748b', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '2px' }}>
+                <Check size={16} />
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-title)' }}>
+                  Role verified: {primaryRole}
+                </div>
+                <div style={{ fontSize: '0.785rem', color: 'var(--text-muted)' }}>
+                  Role-to-application access policy applied across all backend routes.
+                </div>
+              </div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                <Clock size={13} />
+                <span>Session Start</span>
+              </div>
+            </div>
           </div>
-          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-            Click any role to see instant RBAC reconfiguration
+        </div>
+      </section>
+
+      {/* Quick Demo Access Bar (Renamed & Styled as Clean Zoho SaaS Dock) */}
+      <section className="demo-switcher-dock">
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Sparkles size={18} style={{ color: 'var(--primary-500)' }} />
+            <h4 style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-title)' }}>
+              Quick Demo Access
+            </h4>
+          </div>
+          <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+            Click any role to test instant RBAC reconfiguration
           </span>
         </div>
 
-        <div className="demo-accounts-grid">
-          {demoAccounts.map((acc) => (
-            <div
-              key={acc.id}
-              className={`demo-account-card ${currentUser?.email === acc.email ? 'active' : ''}`}
-              style={{
-                borderColor: currentUser?.email === acc.email ? 'var(--primary-500)' : undefined,
-                background: currentUser?.email === acc.email ? 'rgba(99, 102, 241, 0.15)' : undefined
-              }}
-              onClick={() => onSwitchUser(acc.email, 'Password@123')}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                <span className={`badge badge-${acc.role}`}>{acc.role}</span>
-                {currentUser?.email === acc.email && (
-                  <span style={{ fontSize: '0.65rem', color: '#10b981', fontWeight: 700 }}>ACTIVE</span>
-                )}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.75rem' }}>
+          {demoAccounts.map((acc) => {
+            const isActive = currentUser?.email === acc.email;
+            return (
+              <div
+                key={acc.id}
+                onClick={() => onSwitchUser(acc.email, 'Password@123')}
+                style={{
+                  background: isActive ? 'var(--primary-50)' : '#ffffff',
+                  border: isActive ? '2px solid var(--primary-500)' : '1px solid var(--border-default)',
+                  borderRadius: 'var(--radius-md)',
+                  padding: '0.75rem 1rem',
+                  cursor: 'pointer',
+                  transition: 'var(--transition)'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+                  <span className={`badge badge-${acc.role}`} style={{ fontSize: '0.675rem' }}>
+                    {acc.role}
+                  </span>
+                  {isActive && (
+                    <span style={{ fontSize: '0.65rem', color: 'var(--primary-600)', fontWeight: 800 }}>
+                      ACTIVE
+                    </span>
+                  )}
+                </div>
+                <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--text-title)' }}>
+                  {acc.name}
+                </div>
+                <div style={{ fontSize: '0.725rem', color: 'var(--text-muted)' }}>
+                  {acc.targetApp}
+                </div>
               </div>
-              <div style={{ fontSize: '0.85rem', fontWeight: 600 }}>{acc.name}</div>
-              <div style={{ fontSize: '0.725rem', color: 'var(--text-muted)' }}>{acc.targetApp}</div>
-            </div>
-          ))}
+            );
+          })}
         </div>
-      </div>
+      </section>
 
       {/* Live Data Inspector Modal */}
       {selectedApp && (

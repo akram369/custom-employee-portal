@@ -8,110 +8,123 @@ import {
   ExternalLink, 
   Eye, 
   CheckCircle2, 
-  ShieldAlert 
+  ShieldAlert,
+  ArrowRight
 } from 'lucide-react';
 
 export default function ZohoAppCard({ app, isAllowed, userRoles, onInspect, onLaunch }) {
-  // Map icon name to Lucide component
-  const getIcon = () => {
+  // Map application ID to icon and palette
+  const getAppMeta = () => {
     switch (app.id) {
       case 'zoho_people':
-        return <Users size={26} />;
+        return {
+          icon: <Users size={24} />,
+          bg: '#ecfdf5',
+          color: '#059669',
+          dept: 'Human Resources & Talent',
+          desc: 'Manage employee records, leave requests, attendance and performance.'
+        };
       case 'zoho_crm':
-        return <TrendingUp size={26} />;
+        return {
+          icon: <TrendingUp size={24} />,
+          bg: '#eff6ff',
+          color: '#0c66e4',
+          dept: 'Sales & Customer Management',
+          desc: 'Manage leads, accounts and sales opportunities.'
+        };
       case 'zoho_desk':
-        return <Headphones size={26} />;
+        return {
+          icon: <Headphones size={24} />,
+          bg: '#fff7ed',
+          color: '#ea580c',
+          dept: 'Customer Support & Ticketing',
+          desc: 'Resolve customer tickets, manage SLAs, and support incoming client requests.'
+        };
       case 'zoho_books':
-        return <Receipt size={26} />;
+        return {
+          icon: <Receipt size={24} />,
+          bg: '#f5f3ff',
+          color: '#7c3aed',
+          dept: 'Finance & Accounting',
+          desc: 'Track accounts, issue invoices, reconcile expenses, and view financial statements.'
+        };
       default:
-        return <ExternalLink size={26} />;
+        return {
+          icon: <ExternalLink size={24} />,
+          bg: '#f8fafc',
+          color: '#0c66e4',
+          dept: app.category || 'Business App',
+          desc: app.description
+        };
     }
   };
 
+  const meta = getAppMeta();
+
   return (
-    <div 
-      className={`app-card ${!isAllowed ? 'locked' : ''}`}
-      style={{
-        '--card-accent': app.themeColor,
-        '--card-glow': `${app.themeColor}33`
-      }}
-    >
+    <div className={`saas-app-card ${!isAllowed ? 'locked' : ''}`}>
       <div>
         {/* Card Header */}
-        <div className="app-header">
+        <div className="saas-app-header">
           <div 
-            className="app-icon-wrap" 
-            style={{ 
-              background: isAllowed 
-                ? `linear-gradient(135deg, ${app.themeColor} 0%, #1e1b4b 140%)` 
-                : '#334155' 
-            }}
+            className="saas-app-icon" 
+            style={{ background: isAllowed ? meta.bg : '#f1f5f9', color: isAllowed ? meta.color : '#94a3b8' }}
           >
-            {isAllowed ? getIcon() : <Lock size={24} />}
+            {isAllowed ? meta.icon : <Lock size={22} />}
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.35rem' }}>
-            <span className={`badge badge-${app.role}`}>
-              {app.role} Access Only
-            </span>
+          <div style={{ textAlign: 'right' }}>
             {isAllowed ? (
-              <span className="badge badge-live" style={{ fontSize: '0.65rem', padding: '0.15rem 0.5rem' }}>
-                <CheckCircle2 size={12} /> Authorized
+              <span className="badge badge-success">
+                <CheckCircle2 size={12} />
+                <span>Authorized</span>
               </span>
             ) : (
-              <span className="badge" style={{ background: 'rgba(239,68,68,0.1)', color: '#ef4444', fontSize: '0.65rem', padding: '0.15rem 0.5rem' }}>
-                <ShieldAlert size={12} /> Restricted
+              <span className="badge badge-neutral" style={{ color: '#94a3b8' }}>
+                <Lock size={12} />
+                <span>Restricted</span>
               </span>
             )}
           </div>
         </div>
 
-        {/* Title and Category */}
-        <div className="app-category">{app.category}</div>
-        <h3 className="app-title">{app.name}</h3>
-        <p className="app-description">{app.description}</p>
-
-        {/* Key Features */}
-        <div className="app-features">
-          {app.features?.map((f, i) => (
-            <span key={i} className="feature-pill">
-              {f}
-            </span>
-          ))}
-        </div>
+        {/* Title & Department */}
+        <div className="saas-app-dept">{meta.dept}</div>
+        <h3 className="saas-app-name">{app.name}</h3>
+        <p className="saas-app-desc">{meta.desc}</p>
       </div>
 
-      {/* Card Action Buttons */}
-      <div className="app-actions">
+      {/* Card Actions */}
+      <div className="saas-app-actions">
         {isAllowed ? (
           <>
             <button
-              className="btn btn-secondary btn-sm"
-              style={{ flex: 1 }}
-              onClick={() => onInspect(app)}
-              title="Query backend API proxy to fetch live Zoho data"
+              className="btn btn-primary btn-sm"
+              style={{ flex: 1.3 }}
+              onClick={() => onLaunch(app)}
+              title={`Launch ${app.name} via backend service account`}
             >
-              <Eye size={15} />
-              <span>Live Data</span>
+              <span>Open Application</span>
+              <ArrowRight size={14} />
             </button>
             <button
-              className="btn btn-primary btn-sm"
-              style={{ flex: 1.2 }}
-              onClick={() => onLaunch(app)}
-              title="Launch Zoho application with backend service authentication"
+              className="btn btn-secondary btn-sm"
+              style={{ flex: 0.9 }}
+              onClick={() => onInspect(app)}
+              title="View live backend-proxied records"
             >
-              <span>Launch App</span>
-              <ExternalLink size={15} />
+              <Eye size={14} />
+              <span>View Data</span>
             </button>
           </>
         ) : (
           <button
             className="btn btn-secondary btn-sm"
-            style={{ width: '100%', opacity: 0.6, cursor: 'not-allowed' }}
+            style={{ width: '100%', opacity: 0.7, cursor: 'not-allowed', color: '#94a3b8' }}
             disabled
           >
-            <Lock size={15} />
-            <span>Role Restricted ({app.role} required)</span>
+            <Lock size={14} />
+            <span>Requires {app.role} Role</span>
           </button>
         )}
       </div>
