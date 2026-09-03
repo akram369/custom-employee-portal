@@ -8,7 +8,6 @@ const api = axios.create({
   }
 });
 
-// Interceptor to inject JWT Bearer Token into requests
 api.interceptors.request.use(
   (config) => {
     const token = authUtil.getToken();
@@ -20,12 +19,10 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Interceptor to handle authentication failures
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      // Token expired or invalid
       authUtil.clearSession();
       if (window.location.pathname !== '/login') {
         window.location.href = '/login?session_expired=1';
@@ -35,7 +32,6 @@ api.interceptors.response.use(
   }
 );
 
-// Auth endpoints
 export const authAPI = {
   login: async (email, password) => {
     const res = await api.post('/auth/login', { email, password });
@@ -51,7 +47,6 @@ export const authAPI = {
   }
 };
 
-// Zoho integration endpoints
 export const zohoAPI = {
   getAuthorizedApps: async () => {
     const res = await api.get('/zoho/apps');
@@ -71,7 +66,6 @@ export const zohoAPI = {
   }
 };
 
-// Admin endpoints
 export const adminAPI = {
   getStats: async () => {
     const res = await api.get('/admin/stats');

@@ -16,7 +16,6 @@ async function authenticateToken(req, res, next) {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'portal_jwt_secret_fallback');
 
-    // Fetch live user status and assigned roles & permissions from relational database
     const user = await db.getAsync(
       'SELECT id, name, email, department, designation, isActive FROM Users WHERE id = ?',
       [decoded.id]
@@ -36,7 +35,6 @@ async function authenticateToken(req, res, next) {
       });
     }
 
-    // Fetch assigned roles
     const rolesQuery = await db.allAsync(`
       SELECT r.id, r.name 
       FROM Roles r
@@ -46,7 +44,6 @@ async function authenticateToken(req, res, next) {
 
     const roles = rolesQuery.map(r => r.name);
 
-    // Fetch permissions mapped through roles
     const permsQuery = await db.allAsync(`
       SELECT DISTINCT p.name, p.module
       FROM Permissions p

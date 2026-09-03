@@ -7,7 +7,6 @@ const dbPath = process.env.DB_PATH
   ? path.resolve(__dirname, '../../', process.env.DB_PATH)
   : path.resolve(__dirname, 'portal.sqlite');
 
-// Ensure directory exists
 const dbDir = path.dirname(dbPath);
 if (!fs.existsSync(dbDir)) {
   fs.mkdirSync(dbDir, { recursive: true });
@@ -21,7 +20,6 @@ const db = new sqlite3.Database(dbPath, (err) => {
   }
 });
 
-// Promisified helpers for database operations
 db.runAsync = function (sql, params = []) {
   return new Promise((resolve, reject) => {
     db.run(sql, params, function (err) {
@@ -49,11 +47,9 @@ db.allAsync = function (sql, params = []) {
   });
 };
 
-// Initialize schema and seed default data
 async function initDatabase() {
   await db.runAsync('PRAGMA foreign_keys = ON;');
 
-  // 1. Roles table
   await db.runAsync(`
     CREATE TABLE IF NOT EXISTS Roles (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -63,7 +59,6 @@ async function initDatabase() {
     );
   `);
 
-  // 2. Permissions table
   await db.runAsync(`
     CREATE TABLE IF NOT EXISTS Permissions (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -74,7 +69,6 @@ async function initDatabase() {
     );
   `);
 
-  // 3. Users table
   await db.runAsync(`
     CREATE TABLE IF NOT EXISTS Users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -89,7 +83,6 @@ async function initDatabase() {
     );
   `);
 
-  // 4. UserRoles join table
   await db.runAsync(`
     CREATE TABLE IF NOT EXISTS UserRoles (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -102,7 +95,6 @@ async function initDatabase() {
     );
   `);
 
-  // 5. RolePermissions join table
   await db.runAsync(`
     CREATE TABLE IF NOT EXISTS RolePermissions (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -115,7 +107,6 @@ async function initDatabase() {
     );
   `);
 
-  // 6. AuditLogs table
   await db.runAsync(`
     CREATE TABLE IF NOT EXISTS AuditLogs (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -130,19 +121,17 @@ async function initDatabase() {
     );
   `);
 
-  // Seed default data if Roles table is empty
   await seedDatabase();
 }
 
 async function seedDatabase() {
   const existingRole = await db.getAsync('SELECT count(*) as count FROM Roles;');
   if (existingRole && existingRole.count > 0) {
-    return; // Already seeded
+    return;
   }
 
   console.log('Seeding initial Roles, Permissions, and Default Users...');
 
-  // Seed Roles
   const roles = [
     { name: 'Admin', description: 'Full system administration and access to all integrated Zoho One applications' },
     { name: 'HR', description: 'Human Resources management and access to Zoho People' },
@@ -160,26 +149,20 @@ async function seedDatabase() {
     roleMap[r.name] = res.lastID;
   }
 
-  // Seed Permissions
   const permissions = [
-    // Admin module
     { name: 'manage_users', module: 'admin', description: 'Create, update, and deactivate portal users' },
     { name: 'manage_roles', module: 'admin', description: 'Assign roles and configure permission matrices' },
     { name: 'view_audit_logs', module: 'admin', description: 'Inspect audit trail and access logs' },
     { name: 'configure_zoho', module: 'admin', description: 'Manage backend Zoho OAuth credentials' },
-    // HR module
     { name: 'access_zoho_people', module: 'hr', description: 'Access Zoho People HR application' },
     { name: 'view_employees', module: 'hr', description: 'View company staff directories and profiles' },
     { name: 'manage_leave', module: 'hr', description: 'Review and approve leave requests' },
-    // Sales module
     { name: 'access_zoho_crm', module: 'sales', description: 'Access Zoho CRM sales application' },
     { name: 'view_leads', module: 'sales', description: 'View and track incoming sales leads' },
     { name: 'manage_deals', module: 'sales', description: 'Update pipeline opportunities and deals' },
-    // Support module
     { name: 'access_zoho_desk', module: 'support', description: 'Access Zoho Desk customer support application' },
     { name: 'view_tickets', module: 'support', description: 'View assigned support tickets and SLAs' },
     { name: 'manage_cases', module: 'support', description: 'Resolve and update customer helpdesk cases' },
-    // Finance module
     { name: 'access_zoho_books', module: 'finance', description: 'Access Zoho Books accounting application' },
     { name: 'view_invoices', module: 'finance', description: 'Inspect client invoices and payment records' },
     { name: 'manage_estimates', module: 'finance', description: 'Generate accounting estimates and journal entries' }
@@ -194,9 +177,8 @@ async function seedDatabase() {
     permMap[p.name] = res.lastID;
   }
 
-  // Map Role to Permissions
   const rolePermMapping = {
-    Admin: Object.keys(permMap), // Admin gets everything
+    Admin: Object.keys(permMap),
     HR: ['access_zoho_people', 'view_employees', 'manage_leave'],
     Sales: ['access_zoho_crm', 'view_leads', 'manage_deals'],
     Support: ['access_zoho_desk', 'view_tickets', 'manage_cases'],
@@ -216,7 +198,6 @@ async function seedDatabase() {
     }
   }
 
-  // Seed Default Demo Users (Password: Password@123)
   const defaultPasswordHash = await bcrypt.hash('Password@123', 10);
 
   const defaultUsers = [
@@ -270,7 +251,6 @@ async function seedDatabase() {
     );
   }
 
-  // Add initial system startup audit log
   await db.runAsync(
     `INSERT INTO AuditLogs (userId, userEmail, action, resource, details, ipAddress, status) 
      VALUES (NULL, 'SYSTEM', 'SYSTEM_SEED', 'DATABASE', 'Initial schema creation and seed data populated', '127.0.0.1', 'SUCCESS')`

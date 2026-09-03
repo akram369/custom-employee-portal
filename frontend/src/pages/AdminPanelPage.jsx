@@ -26,7 +26,7 @@ import {
 import { adminAPI, zohoAPI } from '../services/api';
 
 export default function AdminPanelPage({ currentUser }) {
-  const [activeTab, setActiveTab] = useState('users'); // 'users' | 'roles' | 'audit' | 'zoho'
+  const [activeTab, setActiveTab] = useState('users');
   const [users, setUsers] = useState([]);
   const [roles, setRoles] = useState([]);
   const [allPermissions, setAllPermissions] = useState([]);
@@ -35,7 +35,6 @@ export default function AdminPanelPage({ currentUser }) {
   const [zohoStatus, setZohoStatus] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // New User Modal
   const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [newUser, setNewUser] = useState({
     name: '',
@@ -43,18 +42,15 @@ export default function AdminPanelPage({ currentUser }) {
     password: 'Password@123',
     department: '',
     designation: '',
-    roleId: 2 // default HR
+    roleId: 2
   });
 
-  // Role Edit Modal
   const [editingUser, setEditingUser] = useState(null);
   const [selectedRoleId, setSelectedRoleId] = useState(2);
 
-  // Audit Logs Filter
   const [auditSearch, setAuditSearch] = useState('');
   const [auditStatus, setAuditStatus] = useState('');
 
-  // Toast / Feedback
   const [notice, setNotice] = useState(null);
 
   const showNotice = (msg, type = 'success') => {
@@ -93,7 +89,6 @@ export default function AdminPanelPage({ currentUser }) {
     loadData();
   }, []);
 
-  // Filter audit logs
   const handleAuditFilter = async () => {
     try {
       const res = await adminAPI.getAuditLogs({
@@ -109,7 +104,6 @@ export default function AdminPanelPage({ currentUser }) {
     }
   };
 
-  // Create User Handler
   const handleCreateUser = async (e) => {
     e.preventDefault();
     try {
@@ -132,7 +126,6 @@ export default function AdminPanelPage({ currentUser }) {
     }
   };
 
-  // Toggle User Active Status
   const handleToggleActive = async (user) => {
     try {
       const res = await adminAPI.updateUser(user.id, { isActive: !user.isActive });
@@ -145,7 +138,6 @@ export default function AdminPanelPage({ currentUser }) {
     }
   };
 
-  // Delete User Handler
   const handleDeleteUser = async (user) => {
     if (!window.confirm(`Are you sure you want to delete ${user.name} (${user.email})?`)) return;
 
@@ -160,7 +152,6 @@ export default function AdminPanelPage({ currentUser }) {
     }
   };
 
-  // Save Role Change
   const handleSaveRole = async () => {
     if (!editingUser) return;
     try {
@@ -175,7 +166,6 @@ export default function AdminPanelPage({ currentUser }) {
     }
   };
 
-  // Toggle Role Permission
   const handleTogglePermission = async (role, permId) => {
     const currentPermIds = role.permissions.map(p => p.id);
     let updated;
@@ -198,7 +188,6 @@ export default function AdminPanelPage({ currentUser }) {
 
   return (
     <div className="main-content">
-      {/* Toast Notice */}
       {notice && (
         <div style={{
           position: 'fixed',
@@ -221,7 +210,6 @@ export default function AdminPanelPage({ currentUser }) {
         </div>
       )}
 
-      {/* Admin Header */}
       <div style={{ marginBottom: '2.5rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.5rem' }}>
           <div>
@@ -249,7 +237,6 @@ export default function AdminPanelPage({ currentUser }) {
           </div>
         </div>
 
-        {/* 4 Stat Summary Cards */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
           <div className="saas-card" style={{ padding: '1.25rem' }}>
             <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700 }}>PORTAL EMPLOYEES</div>
@@ -278,7 +265,6 @@ export default function AdminPanelPage({ currentUser }) {
         </div>
       </div>
 
-      {/* Clean Admin Navigation Tabs */}
       <div className="admin-tabs">
         <button
           className={`admin-tab-btn ${activeTab === 'users' ? 'active' : ''}`}
@@ -313,7 +299,6 @@ export default function AdminPanelPage({ currentUser }) {
         </button>
       </div>
 
-      {/* Tab 1: Users Management */}
       {activeTab === 'users' && (
         <div className="table-card">
           <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--border-subtle)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -426,7 +411,6 @@ export default function AdminPanelPage({ currentUser }) {
         </div>
       )}
 
-      {/* Tab 2: Role & Permission Matrix */}
       {activeTab === 'roles' && (
         <div className="table-card">
           <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--border-subtle)' }}>
@@ -438,7 +422,6 @@ export default function AdminPanelPage({ currentUser }) {
             </p>
           </div>
 
-          {/* Clean Visual Matrix Section */}
           <div style={{ padding: '1.5rem 1.5rem 1rem' }}>
             <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--primary-600)', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
               Application Access Overview
@@ -553,7 +536,6 @@ export default function AdminPanelPage({ currentUser }) {
         </div>
       )}
 
-      {/* Tab 3: Security Activity Audit Logs */}
       {activeTab === 'audit' && (
         <div className="table-card">
           <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--border-subtle)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
@@ -566,7 +548,6 @@ export default function AdminPanelPage({ currentUser }) {
               </p>
             </div>
 
-            {/* Filter Bar */}
             <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
               <div style={{ position: 'relative' }}>
                 <Search size={15} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
@@ -655,7 +636,6 @@ export default function AdminPanelPage({ currentUser }) {
         </div>
       )}
 
-      {/* Tab 4: Zoho One Integration */}
       {activeTab === 'zoho' && (
         <div className="saas-card" style={{ padding: '2rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.75rem', flexWrap: 'wrap', gap: '1rem' }}>
@@ -730,7 +710,6 @@ export default function AdminPanelPage({ currentUser }) {
         </div>
       )}
 
-      {/* Modal: Create User */}
       {showAddUserModal && (
         <div className="modal-overlay" onClick={() => setShowAddUserModal(false)}>
           <div className="modal-window" style={{ maxWidth: '520px' }} onClick={(e) => e.stopPropagation()}>
@@ -828,7 +807,6 @@ export default function AdminPanelPage({ currentUser }) {
         </div>
       )}
 
-      {/* Modal: Change Role */}
       {editingUser && (
         <div className="modal-overlay" onClick={() => setEditingUser(null)}>
           <div className="modal-window" style={{ maxWidth: '440px' }} onClick={(e) => e.stopPropagation()}>

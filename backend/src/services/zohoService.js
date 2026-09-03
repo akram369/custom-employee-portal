@@ -1,10 +1,8 @@
 const axios = require('axios');
 
-// In-memory cache for Zoho access token
 let cachedToken = null;
 let tokenExpiresAt = 0;
 
-// Zoho Applications Registry with RBAC mappings
 const ZOHO_APPS = [
   {
     id: 'zoho_people',
@@ -14,7 +12,7 @@ const ZOHO_APPS = [
     description: 'Centralized employee directory, leave requests, attendance, and HR document management.',
     officialUrl: 'https://people.zoho.com',
     icon: 'Users',
-    themeColor: '#10B981', // Emerald
+    themeColor: '#10B981',
     accentBg: 'rgba(16, 185, 129, 0.1)',
     features: ['Employee Directory', 'Leave Tracking', 'Performance Reviews', 'Timesheets']
   },
@@ -26,7 +24,7 @@ const ZOHO_APPS = [
     description: 'Omnichannel lead pipeline, account tracking, deal negotiations, and sales analytics.',
     officialUrl: 'https://crm.zoho.com',
     icon: 'TrendingUp',
-    themeColor: '#3B82F6', // Blue
+    themeColor: '#3B82F6',
     accentBg: 'rgba(59, 130, 246, 0.1)',
     features: ['Lead Generation', 'Deal Pipeline', 'Contact Management', 'Sales Forecasting']
   },
@@ -38,7 +36,7 @@ const ZOHO_APPS = [
     description: 'Context-aware customer service helpdesk, ticket prioritization, and SLA resolution engine.',
     officialUrl: 'https://desk.zoho.com',
     icon: 'Headphones',
-    themeColor: '#F59E0B', // Amber
+    themeColor: '#F59E0B',
     accentBg: 'rgba(245, 158, 11, 0.1)',
     features: ['Ticket Management', 'SLA Tracking', 'Knowledge Base', 'Customer Satisfaction']
   },
@@ -50,15 +48,12 @@ const ZOHO_APPS = [
     description: 'Online accounting, customer invoices, payment reconciliation, and GST/VAT compliant reporting.',
     officialUrl: 'https://books.zoho.com',
     icon: 'Receipt',
-    themeColor: '#8B5CF6', // Purple
+    themeColor: '#8B5CF6',
     accentBg: 'rgba(139, 92, 246, 0.1)',
     features: ['Invoices & Billing', 'Expense Tracking', 'Bank Reconciliation', 'Financial Reports']
   }
 ];
 
-/**
- * Checks if the backend has valid production Zoho credentials configured
- */
 function isZohoConfigured() {
   if (process.env.ZOHO_MODE === 'demo') return false;
   const { ZOHO_CLIENT_ID, ZOHO_CLIENT_SECRET, ZOHO_REFRESH_TOKEN } = process.env;
@@ -71,18 +66,12 @@ function isZohoConfigured() {
   );
 }
 
-/**
- * Retrieves a Zoho OAuth Access Token using the backend service account refresh token.
- * Caches token in memory until expiration.
- */
 async function getZohoAccessToken() {
-  // Return cached token if valid
   if (cachedToken && Date.now() < tokenExpiresAt) {
     return { token: cachedToken, isLive: true, cached: true };
   }
 
   if (!isZohoConfigured()) {
-    // Return simulated backend service token in demo mode
     cachedToken = 'zoho_simulated_backend_token_' + Date.now();
     tokenExpiresAt = Date.now() + 3600 * 1000;
     return { token: cachedToken, isLive: false, cached: false };
@@ -102,7 +91,6 @@ async function getZohoAccessToken() {
 
     if (response.data && response.data.access_token) {
       cachedToken = response.data.access_token;
-      // Expires in seconds (usually 3600), subtract 2 minutes buffer
       const expiresInSec = response.data.expires_in || 3600;
       tokenExpiresAt = Date.now() + (expiresInSec - 120) * 1000;
       return { token: cachedToken, isLive: true, cached: false };
@@ -111,16 +99,12 @@ async function getZohoAccessToken() {
     }
   } catch (error) {
     console.error('Zoho OAuth Token Retrieval Error:', error.response?.data || error.message);
-    // Fallback to simulated token to prevent service interruption
     cachedToken = 'zoho_simulated_backend_token_fallback_' + Date.now();
     tokenExpiresAt = Date.now() + 1800 * 1000;
     return { token: cachedToken, isLive: false, error: error.message };
   }
 }
 
-/**
- * Helper to determine regional API URLs based on accounts domain
- */
 function getRegionalApiUrl(service) {
   const accountsUrl = process.env.ZOHO_ACCOUNTS_URL || 'https://accounts.zoho.in';
   const isIndia = accountsUrl.includes('.in');
@@ -139,20 +123,14 @@ function getRegionalApiUrl(service) {
   }
 }
 
-/**
- * Gets Zoho applications permitted for a set of roles
- */
 function getApplicationsForRoles(userRoles = []) {
   if (userRoles.includes('Admin')) {
-    return ZOHO_APPS; // Admin has access to all integrated Zoho One services
+    return ZOHO_APPS;
   }
 
   return ZOHO_APPS.filter(app => userRoles.includes(app.role));
 }
 
-/**
- * Fetches data for Zoho People (HR)
- */
 async function fetchZohoPeopleData(tokenInfo) {
   if (tokenInfo.isLive && !tokenInfo.error) {
     try {
@@ -171,7 +149,6 @@ async function fetchZohoPeopleData(tokenInfo) {
     }
   }
 
-  // Simulated live Zoho People records
   return {
     isLive: false,
     source: 'Zoho People Backend Proxy (Demo Simulation)',
@@ -189,9 +166,6 @@ async function fetchZohoPeopleData(tokenInfo) {
   };
 }
 
-/**
- * Fetches data for Zoho CRM (Sales)
- */
 async function fetchZohoCrmData(tokenInfo) {
   if (tokenInfo.isLive && !tokenInfo.error) {
     try {
@@ -210,7 +184,6 @@ async function fetchZohoCrmData(tokenInfo) {
     }
   }
 
-  // Simulated live Zoho CRM records
   return {
     isLive: false,
     source: 'Zoho CRM Backend Proxy (Demo Simulation)',
@@ -228,9 +201,6 @@ async function fetchZohoCrmData(tokenInfo) {
   };
 }
 
-/**
- * Fetches data for Zoho Desk (Support)
- */
 async function fetchZohoDeskData(tokenInfo) {
   if (tokenInfo.isLive && !tokenInfo.error) {
     try {
@@ -249,7 +219,6 @@ async function fetchZohoDeskData(tokenInfo) {
     }
   }
 
-  // Simulated live Zoho Desk records
   return {
     isLive: false,
     source: 'Zoho Desk Backend Proxy (Demo Simulation)',
@@ -267,9 +236,6 @@ async function fetchZohoDeskData(tokenInfo) {
   };
 }
 
-/**
- * Fetches data for Zoho Books (Finance)
- */
 async function fetchZohoBooksData(tokenInfo) {
   if (tokenInfo.isLive && !tokenInfo.error) {
     try {
@@ -288,7 +254,6 @@ async function fetchZohoBooksData(tokenInfo) {
     }
   }
 
-  // Simulated live Zoho Books records
   return {
     isLive: false,
     source: 'Zoho Books Backend Proxy (Demo Simulation)',

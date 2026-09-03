@@ -4,9 +4,6 @@ const { db } = require('../config/db');
 const { logAuditEvent } = require('../middlewares/auditLogger');
 const { ZOHO_APPS } = require('../services/zohoService');
 
-/**
- * Login user and issue JWT
- */
 async function login(req, res) {
   const { email, password } = req.body;
   const ipAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1';
@@ -19,7 +16,6 @@ async function login(req, res) {
   }
 
   try {
-    // Find user by email
     const user = await db.getAsync(
       'SELECT id, name, email, password, department, designation, isActive FROM Users WHERE LOWER(email) = LOWER(?)',
       [email.trim()]
@@ -57,7 +53,6 @@ async function login(req, res) {
       });
     }
 
-    // Verify password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       await logAuditEvent({
@@ -75,7 +70,6 @@ async function login(req, res) {
       });
     }
 
-    // Fetch user roles
     const rolesQuery = await db.allAsync(`
       SELECT r.name 
       FROM Roles r
@@ -84,7 +78,6 @@ async function login(req, res) {
     `, [user.id]);
     const roles = rolesQuery.map(r => r.name);
 
-    // Fetch permissions
     const permsQuery = await db.allAsync(`
       SELECT DISTINCT p.name
       FROM Permissions p
@@ -94,7 +87,6 @@ async function login(req, res) {
     `, [user.id]);
     const permissions = permsQuery.map(p => p.name);
 
-    // Sign JWT
     const secret = process.env.JWT_SECRET || 'portal_jwt_secret_fallback';
     const expiresIn = process.env.JWT_EXPIRES_IN || '8h';
     const token = jwt.sign(
@@ -108,7 +100,6 @@ async function login(req, res) {
       { expiresIn }
     );
 
-    // Audit log
     await logAuditEvent({
       userId: user.id,
       userEmail: user.email,
@@ -142,9 +133,6 @@ async function login(req, res) {
   }
 }
 
-/**
- * Get currently authenticated user profile
- */
 async function getMe(req, res) {
   return res.status(200).json({
     success: true,
@@ -152,9 +140,6 @@ async function getMe(req, res) {
   });
 }
 
-/**
- * Get list of available demo accounts for 1-click switcher
- */
 async function getDemoAccounts(req, res) {
   try {
     const users = await db.allAsync(`
@@ -165,7 +150,6 @@ async function getDemoAccounts(req, res) {
       ORDER BY u.id ASC
     `);
 
-    // Enrich with target Zoho application info
     const enriched = users.map(u => {
       let targetApp = 'All Zoho One Services';
       if (u.role === 'HR') targetApp = 'Zoho People';

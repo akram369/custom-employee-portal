@@ -1,64 +1,54 @@
-/* ==========================================================================
-   Enterprise Employee Portal - Zoho SaaS Design Language
-   Inspired by Zoho CRM: Bright, Clean, Crisp Typography, Generous Whitespace,
-   Pastel Gradients, Royal Blue Accents, Thin Borders & Soft Shadows.
-   ========================================================================== */
+
 
 :root {
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Surfaces & Backgrounds */
   --bg-page: #fbfcfd;
   --bg-surface: #ffffff;
   --bg-surface-subtle: #f8fafc;
   --bg-surface-hover: #f1f5f9;
   --bg-input: #ffffff;
-  
-  /* Borders */
+
   --border-subtle: #eef2f6;
   --border-default: #e2e8f0;
   --border-focus: #0c66e4;
 
-  /* Typography */
   --text-title: #0f172a;
   --text-body: #334155;
   --text-secondary: #475569;
   --text-muted: #64748b;
   --text-light: #94a3b8;
 
-  /* Brand Accents - Zoho Royal Blue & Pastels */
   --primary-50: #eff6ff;
   --primary-100: #dbeafe;
   --primary-200: #bfdbfe;
-  --primary-500: #0c66e4;      /* Strong Zoho Royal Blue */
+  --primary-500: #0c66e4;      
   --primary-600: #0052cc;
   --primary-700: #1d4ed8;
   --primary-gradient: linear-gradient(135deg, #0c66e4 0%, #0052cc 100%);
   --primary-glow: rgba(12, 102, 228, 0.15);
 
-  /* Zoho Product Palette Accents */
-  --zoho-crm: #0c66e4;          /* Royal Blue */
+  --zoho-crm: #0c66e4;          
   --zoho-crm-bg: #eff6ff;
   --zoho-crm-border: #bfdbfe;
 
-  --zoho-people: #059669;       /* Emerald Teal */
+  --zoho-people: #059669;       
   --zoho-people-bg: #ecfdf5;
   --zoho-people-border: #a7f3d0;
 
-  --zoho-desk: #ea580c;         /* Vibrant Amber / Orange */
+  --zoho-desk: #ea580c;         
   --zoho-desk-bg: #fff7ed;
   --zoho-desk-border: #fed7aa;
 
-  --zoho-books: #7c3aed;        /* Violet / Purple */
+  --zoho-books: #7c3aed;        
   --zoho-books-bg: #f5f3ff;
   --zoho-books-border: #ddd6fe;
 
-  --role-admin: #db2777;        /* Pink / Rose */
+  --role-admin: #db2777;        
   --role-admin-bg: #fdf2f8;
   --role-admin-border: #fbcfe8;
 
-  /* Status Colors */
   --success: #16a34a;
   --success-bg: #f0fdf4;
   --success-border: #bbf7d0;
@@ -71,14 +61,12 @@
   --danger-bg: #fef2f2;
   --danger-border: #fecaca;
 
-  /* Shadows - Very subtle enterprise SaaS depth */
   --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
   --shadow-sm: 0 2px 4px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
   --shadow-md: 0 10px 25px -3px rgba(15, 23, 42, 0.06), 0 4px 10px -2px rgba(15, 23, 42, 0.03);
   --shadow-lg: 0 20px 40px -10px rgba(15, 23, 42, 0.08), 0 8px 16px -4px rgba(15, 23, 42, 0.04);
   --shadow-elevated: 0 25px 50px -12px rgba(12, 102, 228, 0.12);
 
-  /* Radius */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
@@ -108,7 +96,6 @@ body {
   background-attachment: fixed;
 }
 
-/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -124,7 +111,6 @@ body {
   background: #94a3b8;
 }
 
-/* Layout Containers */
 .app-container {
   display: flex;
   flex-direction: column;
@@ -139,7 +125,6 @@ body {
   padding: 2.5rem 1.5rem 5rem;
 }
 
-/* Typography */
 h1, h2, h3, h4, h5, h6 {
   color: var(--text-title);
   font-weight: 700;
@@ -150,7 +135,6 @@ p {
   color: var(--text-secondary);
 }
 
-/* Zoho-Style Navigation Header */
 .zoho-navbar {
   position: sticky;
   top: 0;
@@ -214,7 +198,6 @@ p {
   text-transform: uppercase;
 }
 
-/* Nav links */
 .nav-menu {
   display: flex;
   align-items: center;
@@ -254,7 +237,6 @@ p {
   gap: 1.25rem;
 }
 
-/* Clean White SaaS Cards */
 .saas-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-default);
@@ -268,7 +250,6 @@ p {
   box-shadow: var(--shadow-md);
 }
 
-/* Badges */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -335,7 +316,6 @@ p {
   border: 1px solid #e2e8f0;
 }
 
-/* Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -415,7 +395,6 @@ p {
   background: #fee2e2;
 }
 
-/* Forms & Inputs */
 .form-group {
   display: flex;
   flex-direction: column;
@@ -453,7 +432,6 @@ p {
   color: #94a3b8;
 }
 
-/* Landing / Hero Layout */
 .landing-hero {
   max-width: 1280px;
   margin: 0 auto;
@@ -512,7 +490,6 @@ p {
   color: var(--text-muted);
 }
 
-/* 4 Mini App Cards on Hero */
 .hero-apps-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -548,7 +525,6 @@ p {
   flex-shrink: 0;
 }
 
-/* 3 Feature Highlights */
 .hero-features-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -577,7 +553,6 @@ p {
   color: var(--text-muted);
 }
 
-/* Right Side Login Card */
 .login-card-container {
   background: #ffffff;
   border: 1px solid var(--border-default);
@@ -604,7 +579,6 @@ p {
   color: var(--text-secondary);
 }
 
-/* Demo Switcher Accordion / Dropdown */
 .demo-account-accordion {
   margin-top: 1.75rem;
   border: 1px solid var(--border-default);
@@ -661,7 +635,6 @@ p {
   transform: translateX(2px);
 }
 
-/* Zero Zoho Credential Notice */
 .zero-credential-banner {
   margin-top: 1.5rem;
   padding: 0.85rem 1rem;
@@ -680,7 +653,6 @@ p {
   line-height: 1.5;
 }
 
-/* Dashboard Layout */
 .dashboard-hero {
   background: #ffffff;
   border: 1px solid var(--border-default);
@@ -707,7 +679,6 @@ p {
   color: var(--text-secondary);
 }
 
-/* Application Cards Grid */
 .saas-apps-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -792,7 +763,6 @@ p {
   margin-top: auto;
 }
 
-/* Access Control Visualization ("Your Access") */
 .access-viz-container {
   background: #ffffff;
   border: 1px solid var(--border-default);
@@ -830,7 +800,6 @@ p {
   opacity: 0.65;
 }
 
-/* Modern Clean Tables */
 .table-card {
   background: #ffffff;
   border: 1px solid var(--border-default);
@@ -873,7 +842,6 @@ p {
   background: #f8fafc;
 }
 
-/* Modals */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -932,7 +900,6 @@ p {
   background: #f8fafc;
 }
 
-/* Clean Admin Tabs */
 .admin-tabs {
   display: flex;
   gap: 0.5rem;
@@ -966,7 +933,6 @@ p {
   font-weight: 700;
 }
 
-/* Quick Demo Switcher Floating Bar */
 .demo-switcher-dock {
   background: #ffffff;
   border: 1px solid var(--border-default);
@@ -976,7 +942,6 @@ p {
   margin-top: 3rem;
 }
 
-/* Animations */
 .spin {
   animation: spin 1s linear infinite;
 }
@@ -985,7 +950,6 @@ p {
   to { transform: rotate(360deg); }
 }
 
-/* Mobile Responsiveness */
 @media (max-width: 960px) {
   .landing-hero {
     grid-template-columns: 1fr;

@@ -5,13 +5,11 @@ const dbPath = path.resolve(__dirname, 'portal.sqlite');
 
 console.log('🔄 Resetting Enterprise Portal database...');
 
-// Remove existing database file if present
 if (fs.existsSync(dbPath)) {
   fs.unlinkSync(dbPath);
   console.log('🗑️  Removed existing portal.sqlite file.');
 }
 
-// Re-initialize using db.js
 const { initDatabase } = require('./db');
 
 initDatabase()

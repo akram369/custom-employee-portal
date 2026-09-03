@@ -10,9 +10,8 @@ import { ShieldAlert, ArrowLeft } from 'lucide-react';
 export default function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [currentView, setCurrentView] = useState('dashboard'); // 'dashboard' | 'applications' | 'activity' | 'admin'
+  const [currentView, setCurrentView] = useState('dashboard');
 
-  // Restore session from token on mount
   useEffect(() => {
     const token = authUtil.getToken();
     if (token) {
@@ -60,7 +59,6 @@ export default function App() {
     }
   };
 
-  // Scroll to section when subview is clicked
   useEffect(() => {
     if (currentView === 'applications') {
       const el = document.getElementById('applications-section');

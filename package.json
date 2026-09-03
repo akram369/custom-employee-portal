@@ -6,7 +6,20 @@
     "start": "node backend/server.js",
     "backend": "cd backend && node server.js",
     "frontend": "cd frontend && npm run dev",
-    "test": "cd backend && node test-backend.js"
+    "test": "cd backend && node test-backend.js",
+    "build": "cd frontend && npm run build",
+    "db:reset": "cd backend && npm run db:reset",
+    "install:all": "npm --prefix backend install && npm --prefix frontend install"
   },
-  "keywords": ["zoho", "rbac", "employee-portal", "react", "express", "sqlite"]
+  "keywords": [
+    "zoho",
+    "rbac",
+    "employee-portal",
+    "react",
+    "express",
+    "sqlite",
+    "oauth2"
+  ],
+  "author": "Wasim Akram",
+  "license": "MIT"
 }

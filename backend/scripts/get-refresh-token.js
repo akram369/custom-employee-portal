@@ -2,7 +2,6 @@ const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 
-// Usage: node scripts/get-refresh-token.js <CLIENT_ID> <CLIENT_SECRET> <AUTH_CODE> [ACCOUNTS_URL]
 const args = process.argv.slice(2);
 
 if (args.length < 3) {
@@ -15,12 +14,7 @@ Usage:
   node scripts/get-refresh-token.js <CLIENT_ID> <CLIENT_SECRET> <AUTH_CODE> [ACCOUNTS_URL]
 
 Example:
-  node scripts/get-refresh-token.js 1000.XXXXX 6789abcdef 1000.authcode https://accounts.zoho.com
-
-Note:
-  - If your Zoho account was registered in India, use: https://accounts.zoho.in
-  - If registered in EU, use: https://accounts.zoho.eu
-  - Default is: https://accounts.zoho.com
+  node scripts/get-refresh-token.js 1000.XXXXX 6789abcdef 1000.authcode https://accounts.zoho.in
 ========================================================================
   `);
   process.exit(0);
@@ -63,7 +57,6 @@ async function exchangeToken() {
     if (api_domain) console.log(`API_DOMAIN=${api_domain}`);
     console.log('----------------------------------------------------');
 
-    // Auto update backend/.env if confirmed
     const envPath = path.resolve(__dirname, '../.env');
     if (fs.existsSync(envPath)) {
       let envContent = fs.readFileSync(envPath, 'utf8');

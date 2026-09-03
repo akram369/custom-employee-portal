@@ -2,9 +2,6 @@ const bcrypt = require('bcryptjs');
 const { db } = require('../config/db');
 const { logAuditEvent } = require('../middlewares/auditLogger');
 
-/**
- * List all users with their assigned roles
- */
 async function listUsers(req, res) {
   try {
     const users = await db.allAsync(`
@@ -37,9 +34,6 @@ async function listUsers(req, res) {
   }
 }
 
-/**
- * Create a new user with assigned role(s)
- */
 async function createUser(req, res) {
   const { name, email, password, department, designation, roleId } = req.body;
   const ipAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1';
@@ -52,7 +46,6 @@ async function createUser(req, res) {
   }
 
   try {
-    // Check if email already exists
     const existing = await db.getAsync('SELECT id FROM Users WHERE LOWER(email) = LOWER(?)', [email.trim()]);
     if (existing) {
       return res.status(409).json({ success: false, message: 'A user with this email already exists' });
@@ -66,7 +59,6 @@ async function createUser(req, res) {
 
     const newUserId = userResult.lastID;
 
-    // Support single roleId or array of roleIds
     const roleIds = Array.isArray(roleId) ? roleId : [roleId];
     for (const rId of roleIds) {
       await db.runAsync(
@@ -96,9 +88,6 @@ async function createUser(req, res) {
   }
 }
 
-/**
- * Update user profile or active status
- */
 async function updateUser(req, res) {
   const { id } = req.params;
   const { name, department, designation, isActive, roleId } = req.body;
@@ -110,7 +99,6 @@ async function updateUser(req, res) {
       return res.status(404).json({ success: false, message: 'User not found' });
     }
 
-    // Update user columns if provided
     if (name !== undefined || department !== undefined || designation !== undefined || isActive !== undefined) {
       await db.runAsync(
         `UPDATE Users 
@@ -124,7 +112,6 @@ async function updateUser(req, res) {
       );
     }
 
-    // Update role if provided
     if (roleId !== undefined) {
       await db.runAsync('DELETE FROM UserRoles WHERE userId = ?', [id]);
       const roleIds = Array.isArray(roleId) ? roleId : [roleId];
@@ -150,9 +137,6 @@ async function updateUser(req, res) {
   }
 }
 
-/**
- * Delete user account
- */
 async function deleteUser(req, res) {
   const { id } = req.params;
   const ipAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1';
@@ -186,9 +170,6 @@ async function deleteUser(req, res) {
   }
 }
 
-/**
- * List all roles with their assigned permissions
- */
 async function listRoles(req, res) {
   try {
     const roles = await db.allAsync('SELECT * FROM Roles ORDER BY id ASC');
@@ -219,9 +200,6 @@ async function listRoles(req, res) {
   }
 }
 
-/**
- * Update permissions for a specific role
- */
 async function updateRolePermissions(req, res) {
   const { roleId } = req.params;
   const { permissionIds } = req.body;
@@ -237,7 +215,6 @@ async function updateRolePermissions(req, res) {
       return res.status(404).json({ success: false, message: 'Role not found' });
     }
 
-    // Replace permissions
     await db.runAsync('DELETE FROM RolePermissions WHERE roleId = ?', [roleId]);
 
     for (const pId of permissionIds) {
@@ -264,9 +241,6 @@ async function updateRolePermissions(req, res) {
   }
 }
 
-/**
- * Retrieve system audit logs with optional query filters
- */
 async function getAuditLogs(req, res) {
   const { action, status, search, limit = 100 } = req.query;
 
@@ -300,9 +274,6 @@ async function getAuditLogs(req, res) {
   }
 }
 
-/**
- * Portal admin dashboard overview statistics
- */
 async function getSystemStats(req, res) {
   try {
     const userCount = await db.getAsync('SELECT count(*) as count FROM Users');

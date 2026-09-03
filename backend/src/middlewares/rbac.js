@@ -1,10 +1,5 @@
 const { logAuditEvent } = require('./auditLogger');
 
-/**
- * Middleware to restrict access based on user role(s).
- * Admins always have supervisory access.
- * @param {string|string[]} allowedRoles
- */
 const verifyRole = (allowedRoles) => {
   const rolesArray = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
 
@@ -14,7 +9,6 @@ const verifyRole = (allowedRoles) => {
     }
 
     const userRoles = req.user.roles || [];
-    // Check if user has one of the allowed roles or is an Admin
     const hasRole = userRoles.some(r => rolesArray.includes(r) || r === 'Admin');
 
     if (!hasRole) {
@@ -41,10 +35,6 @@ const verifyRole = (allowedRoles) => {
   };
 };
 
-/**
- * Middleware to restrict access based on granular permission name.
- * @param {string} requiredPermission
- */
 const verifyPermission = (requiredPermission) => {
   return async (req, res, next) => {
     if (!req.user) {
@@ -54,7 +44,6 @@ const verifyPermission = (requiredPermission) => {
     const userRoles = req.user.roles || [];
     const userPermissions = req.user.permissions || [];
 
-    // Admins bypass granular checks; otherwise check permission list
     const hasPermission = userRoles.includes('Admin') || userPermissions.includes(requiredPermission);
 
     if (!hasPermission) {

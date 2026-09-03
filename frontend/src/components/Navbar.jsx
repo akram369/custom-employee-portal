@@ -16,7 +16,6 @@ export default function Navbar({ currentUser, onLogout, currentView, setCurrentV
   return (
     <header className="zoho-navbar">
       <div className="zoho-navbar-inner">
-        {/* Brand Logo */}
         <div className="portal-brand" onClick={() => setCurrentView('dashboard')}>
           <div className="portal-brand-symbol">
             <Shield size={22} />
@@ -27,7 +26,6 @@ export default function Navbar({ currentUser, onLogout, currentView, setCurrentV
           </div>
         </div>
 
-        {/* Center Nav Links */}
         <nav className="nav-menu">
           <button
             className={`nav-item ${currentView === 'dashboard' ? 'active' : ''}`}
@@ -64,9 +62,7 @@ export default function Navbar({ currentUser, onLogout, currentView, setCurrentV
           )}
         </nav>
 
-        {/* Right Side User Profile & Status */}
         <div className="nav-actions">
-          {/* User Profile Card */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <div 
               style={{
@@ -102,7 +98,6 @@ export default function Navbar({ currentUser, onLogout, currentView, setCurrentV
             </div>
           </div>
 
-          {/* Logout Button */}
           <button
             className="btn btn-secondary btn-sm"
             onClick={onLogout}

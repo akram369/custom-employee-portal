@@ -1,8 +1,5 @@
 const { db } = require('../config/db');
 
-/**
- * Persists an audit log entry to the relational AuditLogs table.
- */
 async function logAuditEvent({
   userId = null,
   userEmail = 'ANONYMOUS',
@@ -24,9 +21,6 @@ async function logAuditEvent({
   }
 }
 
-/**
- * Middleware that attaches a convenient audit logging method to `req`.
- */
 function auditMiddleware(req, res, next) {
   req.logAudit = async (action, resource, details = '', status = 'SUCCESS') => {
     const userId = req.user ? req.user.id : null;

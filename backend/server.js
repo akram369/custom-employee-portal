@@ -11,7 +11,6 @@ const adminRoutes = require('./src/routes/adminRoutes');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Security & Parsing Middlewares
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -22,7 +21,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(auditMiddleware);
 
-// Health check endpoint
 app.get('/api/health', (req, res) => {
   res.status(200).json({
     status: 'UP',
@@ -32,12 +30,10 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Mount Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/zoho', zohoRoutes);
 app.use('/api/admin', adminRoutes);
 
-// 404 Handler
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -45,7 +41,6 @@ app.use((req, res) => {
   });
 });
 
-// Global Error Handler
 app.use((err, req, res, next) => {
   console.error('Unhandled server error:', err);
   res.status(500).json({
@@ -55,7 +50,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Initialize database and start listening
 async function startServer() {
   try {
     console.log('Initializing database schema and initial data...');

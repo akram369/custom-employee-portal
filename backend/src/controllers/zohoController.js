@@ -10,14 +10,10 @@ const {
 } = require('../services/zohoService');
 const { logAuditEvent } = require('../middlewares/auditLogger');
 
-/**
- * Get list of authorized Zoho applications for current user based on RBAC
- */
 async function getAuthorizedApps(req, res) {
   const userRoles = req.user.roles || [];
   const authorizedApps = getApplicationsForRoles(userRoles);
 
-  // Mark all apps with user's access status so frontend can display available vs locked
   const allAppsWithStatus = ZOHO_APPS.map(app => {
     const isAllowed = userRoles.includes('Admin') || userRoles.includes(app.role);
     return {
@@ -45,9 +41,6 @@ async function getAuthorizedApps(req, res) {
   });
 }
 
-/**
- * Proxies live/demo data for a specific Zoho service through backend OAuth service account
- */
 async function getAppData(req, res) {
   const { appId } = req.params;
   const userRoles = req.user.roles || [];
@@ -61,7 +54,6 @@ async function getAppData(req, res) {
     });
   }
 
-  // RBAC check: User must have the assigned role or be an Admin
   const isAllowed = userRoles.includes('Admin') || userRoles.includes(app.role);
 
   if (!isAllowed) {
@@ -82,7 +74,6 @@ async function getAppData(req, res) {
   }
 
   try {
-    // Acquire service account token
     const tokenInfo = await getZohoAccessToken();
 
     let result;
@@ -103,7 +94,6 @@ async function getAppData(req, res) {
         return res.status(400).json({ success: false, message: 'Unsupported service' });
     }
 
-    // Audit log successful proxy
     await logAuditEvent({
       userId: req.user.id,
       userEmail: req.user.email,
@@ -151,9 +141,6 @@ async function getAppData(req, res) {
   }
 }
 
-/**
- * Generates an authorized launch action for the target Zoho application
- */
 async function launchApp(req, res) {
   const { appId } = req.params;
   const userRoles = req.user.roles || [];
@@ -164,7 +151,6 @@ async function launchApp(req, res) {
     return res.status(404).json({ success: false, message: 'Application not found' });
   }
 
-  // RBAC check
   const isAllowed = userRoles.includes('Admin') || userRoles.includes(app.role);
   if (!isAllowed) {
     await logAuditEvent({
@@ -183,7 +169,6 @@ async function launchApp(req, res) {
     });
   }
 
-  // Log authorized launch
   await logAuditEvent({
     userId: req.user.id,
     userEmail: req.user.email,
@@ -203,9 +188,6 @@ async function launchApp(req, res) {
   });
 }
 
-/**
- * Returns Zoho Integration connection status and configuration metrics
- */
 async function getZohoStatus(req, res) {
   const configured = isZohoConfigured();
   const tokenInfo = await getZohoAccessToken();
@@ -214,7 +196,7 @@ async function getZohoStatus(req, res) {
     success: true,
     configured,
     mode: configured ? 'Production OAuth' : 'Demo Verification Mode',
-    accountsUrl: process.env.ZOHO_ACCOUNTS_URL || 'https://accounts.zoho.com',
+    accountsUrl: process.env.ZOHO_ACCOUNTS_URL || 'https://accounts.zoho.in',
     tokenStatus: {
       hasActiveToken: Boolean(tokenInfo.token),
       isLive: tokenInfo.isLive,

@@ -24,13 +24,11 @@ export default function DashboardPage({ currentUser, onSwitchUser, initialSubVie
   const [loading, setLoading] = useState(true);
   const [demoAccounts, setDemoAccounts] = useState([]);
 
-  // Data Modal State
   const [selectedApp, setSelectedApp] = useState(null);
   const [modalData, setModalData] = useState(null);
   const [modalLoading, setModalLoading] = useState(false);
   const [modalError, setModalError] = useState('');
 
-  // Toast / notification
   const [toast, setToast] = useState(null);
 
   const showToast = (message, type = 'info') => {
@@ -61,7 +59,6 @@ export default function DashboardPage({ currentUser, onSwitchUser, initialSubVie
       .catch(err => console.warn(err));
   }, [currentUser]);
 
-  // Handle Inspect Live Data (Calls backend proxy)
   const handleInspect = async (app) => {
     setSelectedApp(app);
     setModalLoading(true);
@@ -82,7 +79,6 @@ export default function DashboardPage({ currentUser, onSwitchUser, initialSubVie
     }
   };
 
-  // Handle Launch App
   const handleLaunch = async (app) => {
     try {
       const res = await zohoAPI.launchApp(app.id);
@@ -98,7 +94,6 @@ export default function DashboardPage({ currentUser, onSwitchUser, initialSubVie
   const userRoles = currentUser?.roles || [];
   const primaryRole = userRoles[0] || 'Employee';
 
-  // Greeting based on time
   const getGreeting = () => {
     const hour = new Date().getHours();
     if (hour < 12) return 'Good morning';
@@ -106,7 +101,6 @@ export default function DashboardPage({ currentUser, onSwitchUser, initialSubVie
     return 'Good evening';
   };
 
-  // Fixed list of all 4 company apps for Access Control Visualization
   const catalogApps = [
     { id: 'zoho_crm', name: 'Zoho CRM', role: 'Sales' },
     { id: 'zoho_people', name: 'Zoho People', role: 'HR' },
@@ -116,7 +110,6 @@ export default function DashboardPage({ currentUser, onSwitchUser, initialSubVie
 
   return (
     <div className="main-content">
-      {/* Toast Notification */}
       {toast && (
         <div style={{
           position: 'fixed',
@@ -139,7 +132,6 @@ export default function DashboardPage({ currentUser, onSwitchUser, initialSubVie
         </div>
       )}
 
-      {/* Main Hero Section */}
       <div className="dashboard-hero">
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.65rem' }}>
@@ -160,7 +152,6 @@ export default function DashboardPage({ currentUser, onSwitchUser, initialSubVie
           </p>
         </div>
 
-        {/* Quick RBAC Summary Pill */}
         <div style={{ 
           background: '#f8fafc', 
           border: '1px solid var(--border-default)', 
@@ -190,7 +181,6 @@ export default function DashboardPage({ currentUser, onSwitchUser, initialSubVie
         </div>
       </div>
 
-      {/* Applications Section */}
       <section id="applications-section" style={{ marginBottom: '3.5rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
           <div>
@@ -233,7 +223,6 @@ export default function DashboardPage({ currentUser, onSwitchUser, initialSubVie
         )}
       </section>
 
-      {/* Access Control Visualization ("Your Access") */}
       <section className="access-viz-container">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
@@ -259,7 +248,6 @@ export default function DashboardPage({ currentUser, onSwitchUser, initialSubVie
           </div>
         </div>
 
-        {/* 4 App Access Checklist */}
         <div className="access-viz-grid">
           {catalogApps.map((app) => {
             const isAuthorized = primaryRole === 'Admin' || primaryRole === app.role;
@@ -294,7 +282,6 @@ export default function DashboardPage({ currentUser, onSwitchUser, initialSubVie
         </div>
       </section>
 
-      {/* Activity Section */}
       <section id="activity-section" style={{ marginBottom: '3rem' }}>
         <div style={{ marginBottom: '1rem' }}>
           <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-title)' }}>
@@ -368,7 +355,6 @@ export default function DashboardPage({ currentUser, onSwitchUser, initialSubVie
         </div>
       </section>
 
-      {/* Quick Demo Access Bar (Renamed & Styled as Clean Zoho SaaS Dock) */}
       <section className="demo-switcher-dock">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -420,7 +406,6 @@ export default function DashboardPage({ currentUser, onSwitchUser, initialSubVie
         </div>
       </section>
 
-      {/* Live Data Inspector Modal */}
       {selectedApp && (
         <ZohoDataModal
           app={selectedApp}

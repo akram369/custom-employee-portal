@@ -35,19 +35,16 @@ export default function LoginPage({ onLoginSuccess }) {
   const [demoAccounts, setDemoAccounts] = useState([]);
   const [demoOpen, setDemoOpen] = useState(true);
 
-  // Active Navbar Dropdown / Modal
-  const [activeDropdown, setActiveDropdown] = useState(null); // 'features' | 'solutions' | 'apps' | 'resources' | 'lang' | null
+  const [activeDropdown, setActiveDropdown] = useState(null);
   const [showSecurityModal, setShowSecurityModal] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('English (India)');
 
-  // Contact Admin Form State
   const [contactForm, setContactForm] = useState({ name: '', email: '', department: 'Sales', message: '' });
   const [contactSubmitted, setContactSubmitted] = useState(false);
 
   const dropdownRef = useRef(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -59,7 +56,6 @@ export default function LoginPage({ onLoginSuccess }) {
   }, []);
 
   useEffect(() => {
-    // Load pre-configured demo accounts for 1-click login
     authAPI.getDemoAccounts()
       .then(res => {
         if (res.success) {
@@ -122,10 +118,8 @@ export default function LoginPage({ onLoginSuccess }) {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {/* Top Navigation Bar */}
       <header className="zoho-navbar">
         <div className="zoho-navbar-inner" ref={dropdownRef} style={{ position: 'relative' }}>
-          {/* Brand Logo */}
           <div className="portal-brand" onClick={() => {}}>
             <div className="portal-brand-symbol">
               <Shield size={22} />
@@ -136,9 +130,7 @@ export default function LoginPage({ onLoginSuccess }) {
             </div>
           </div>
 
-          {/* Interactive Navigation Menu */}
           <nav className="nav-menu">
-            {/* Features Dropdown */}
             <div style={{ position: 'relative' }}>
               <button
                 type="button"
@@ -199,7 +191,6 @@ export default function LoginPage({ onLoginSuccess }) {
               )}
             </div>
 
-            {/* Solutions Dropdown */}
             <div style={{ position: 'relative' }}>
               <button
                 type="button"
@@ -270,7 +261,6 @@ export default function LoginPage({ onLoginSuccess }) {
               )}
             </div>
 
-            {/* Zoho Apps Dropdown */}
             <div style={{ position: 'relative' }}>
               <button
                 type="button"
@@ -333,7 +323,6 @@ export default function LoginPage({ onLoginSuccess }) {
               )}
             </div>
 
-            {/* Security Modal Trigger */}
             <button
               type="button"
               className="nav-item"
@@ -342,7 +331,6 @@ export default function LoginPage({ onLoginSuccess }) {
               <span>Security</span>
             </button>
 
-            {/* Resources Dropdown */}
             <div style={{ position: 'relative' }}>
               <button
                 type="button"
@@ -387,9 +375,7 @@ export default function LoginPage({ onLoginSuccess }) {
             </div>
           </nav>
 
-          {/* Right Nav Actions */}
           <div className="nav-actions">
-            {/* Language Selector Dropdown */}
             <div style={{ position: 'relative' }}>
               <div 
                 style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', color: 'var(--text-secondary)', cursor: 'pointer', padding: '0.4rem 0.6rem', borderRadius: '8px', background: '#f8fafc', border: '1px solid var(--border-default)' }}
@@ -441,7 +427,6 @@ export default function LoginPage({ onLoginSuccess }) {
               )}
             </div>
 
-            {/* Contact Admin Button */}
             <button 
               className="btn btn-secondary btn-sm"
               onClick={() => setShowContactModal(true)}
@@ -452,9 +437,7 @@ export default function LoginPage({ onLoginSuccess }) {
         </div>
       </header>
 
-      {/* Main Hero Section */}
       <main className="landing-hero">
-        {/* Left Hero Column */}
         <div className="landing-left">
           <div className="hero-pill-badge">
             <Sparkles size={14} style={{ color: 'var(--primary-500)' }} />
@@ -475,7 +458,6 @@ export default function LoginPage({ onLoginSuccess }) {
             One secure entry point for Zoho One services.
           </div>
 
-          {/* 4 Small Application Cards */}
           <div className="hero-apps-grid">
             <div className="hero-app-mini">
               <div className="hero-app-mini-icon" style={{ background: '#eff6ff', color: '#0c66e4' }}>
@@ -518,7 +500,6 @@ export default function LoginPage({ onLoginSuccess }) {
             </div>
           </div>
 
-          {/* 3 Feature Highlights */}
           <div className="hero-features-row">
             <div className="hero-feature-item">
               <div className="hero-feature-title">
@@ -546,7 +527,6 @@ export default function LoginPage({ onLoginSuccess }) {
           </div>
         </div>
 
-        {/* Right Hero Column: Large White Rounded Login Card */}
         <div className="login-card-container">
           <div className="login-card-header">
             <h2 className="login-card-title">Welcome back</h2>
@@ -623,7 +603,6 @@ export default function LoginPage({ onLoginSuccess }) {
             </button>
           </form>
 
-          {/* Try a demo account accordion */}
           <div className="demo-account-accordion">
             <button 
               type="button" 
@@ -667,7 +646,6 @@ export default function LoginPage({ onLoginSuccess }) {
             )}
           </div>
 
-          {/* Zero Zoho credentials required notice */}
           <div className="zero-credential-banner">
             <CheckCircle2 size={18} style={{ color: '#16a34a', flexShrink: 0, marginTop: '2px' }} />
             <div className="zero-credential-banner-text">
@@ -678,7 +656,6 @@ export default function LoginPage({ onLoginSuccess }) {
         </div>
       </main>
 
-      {/* Security Overview Modal */}
       {showSecurityModal && (
         <div className="modal-overlay" onClick={() => setShowSecurityModal(false)}>
           <div className="modal-window" style={{ maxWidth: '640px' }} onClick={(e) => e.stopPropagation()}>
@@ -737,7 +714,6 @@ export default function LoginPage({ onLoginSuccess }) {
         </div>
       )}
 
-      {/* Contact Admin Modal */}
       {showContactModal && (
         <div className="modal-overlay" onClick={() => setShowContactModal(false)}>
           <div className="modal-window" style={{ maxWidth: '520px' }} onClick={(e) => e.stopPropagation()}>

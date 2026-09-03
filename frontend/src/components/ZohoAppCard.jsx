@@ -14,7 +14,6 @@ import {
 } from 'lucide-react';
 
 export default function ZohoAppCard({ app, isAllowed, userRoles, onInspect, onLaunch }) {
-  // Map application ID to icon and palette
   const getAppMeta = () => {
     switch (app.id) {
       case 'zoho_people':
@@ -65,7 +64,6 @@ export default function ZohoAppCard({ app, isAllowed, userRoles, onInspect, onLa
   return (
     <div className={`saas-app-card ${!isAllowed ? 'locked' : ''}`}>
       <div>
-        {/* Card Header */}
         <div className="saas-app-header">
           <div 
             className="saas-app-icon" 
@@ -89,13 +87,11 @@ export default function ZohoAppCard({ app, isAllowed, userRoles, onInspect, onLa
           </div>
         </div>
 
-        {/* Title & Department */}
         <div className="saas-app-dept">{meta.dept}</div>
         <h3 className="saas-app-name">{app.name}</h3>
         <p className="saas-app-desc">{meta.desc}</p>
       </div>
 
-      {/* Card Actions */}
       <div className="saas-app-actions" style={{ flexDirection: 'column', gap: '0.65rem' }}>
         {isAllowed ? (
           <>
@@ -113,7 +109,7 @@ export default function ZohoAppCard({ app, isAllowed, userRoles, onInspect, onLa
                 className="btn btn-secondary btn-sm"
                 style={{ flex: 0.9 }}
                 onClick={() => onLaunch(app)}
-                title={`Open official web portal in new tab`}
+                title="Open official web portal in new tab"
               >
                 <span>Web Portal</span>
                 <ExternalLink size={13} />

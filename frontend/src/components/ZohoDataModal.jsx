@@ -11,9 +11,8 @@ import {
 } from 'lucide-react';
 
 export default function ZohoDataModal({ app, data, loading, error, onClose, onRefresh }) {
-  const [activeTab, setActiveTab] = useState('formatted'); // 'formatted' | 'raw'
+  const [activeTab, setActiveTab] = useState('formatted');
 
-  // Normalize records whether live Zoho cloud array or simulation format
   const normalizedRecords = React.useMemo(() => {
     const rawList = data?.payload?.data || data?.payload?.records || [];
     if (!Array.isArray(rawList)) return [];
@@ -68,7 +67,6 @@ export default function ZohoDataModal({ app, data, loading, error, onClose, onRe
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-window" onClick={(e) => e.stopPropagation()}>
-        {/* Header */}
         <div className="modal-header-clean">
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
             <div 
@@ -108,7 +106,6 @@ export default function ZohoDataModal({ app, data, loading, error, onClose, onRe
           </button>
         </div>
 
-        {/* Security Notice Banner */}
         <div 
           style={{ 
             background: '#f0f9ff', 
@@ -132,7 +129,6 @@ export default function ZohoDataModal({ app, data, loading, error, onClose, onRe
           )}
         </div>
 
-        {/* Modal Body */}
         <div className="modal-body-clean">
           {loading ? (
             <div style={{ textAlign: 'center', padding: '3.5rem' }}>
@@ -147,7 +143,6 @@ export default function ZohoDataModal({ app, data, loading, error, onClose, onRe
             </div>
           ) : (
             <div>
-              {/* Tab Navigation */}
               <div style={{ display: 'flex', gap: '1.25rem', borderBottom: '1px solid var(--border-default)', marginBottom: '1.5rem' }}>
                 <button
                   style={{
@@ -187,7 +182,6 @@ export default function ZohoDataModal({ app, data, loading, error, onClose, onRe
 
               {activeTab === 'formatted' ? (
                 <div>
-                  {/* Summary Metric Stats Cards */}
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '1.5rem' }}>
                     {app.id === 'zoho_people' && (
                       <>
@@ -258,7 +252,6 @@ export default function ZohoDataModal({ app, data, loading, error, onClose, onRe
                     )}
                   </div>
 
-                  {/* Clean White Table */}
                   <div className="table-card">
                     <div className="table-responsive">
                       <table className="saas-table">
@@ -382,7 +375,6 @@ export default function ZohoDataModal({ app, data, loading, error, onClose, onRe
           )}
         </div>
 
-        {/* Footer */}
         <div className="modal-footer-clean">
           <button className="btn btn-secondary btn-sm" onClick={onRefresh} disabled={loading}>
             <RefreshCw size={14} className={loading ? 'spin' : ''} />
