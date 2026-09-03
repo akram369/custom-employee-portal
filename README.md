@@ -23,7 +23,6 @@
 9. [Database Schema & Relational Integrity](#database-schema--relational-integrity)
 10. [REST API Specification](#rest-api-specification)
 11. [Testing & Automated Verification](#testing--automated-verification)
-12. [Video Presentation Script](#video-presentation-script)
 
 ---
 
@@ -45,7 +44,7 @@ The **Enterprise Employee Portal** solves this through a dual-layer security arc
 | **Zoho API Integration** | **25%** | Single centralized OAuth 2.0 service account with automated in-memory refresh-token rotation and caching. Zero individual employee Zoho credentials. Fully tested against live Zoho Cloud India DC endpoints (`accounts.zoho.in` & `zohoapis.in`). | ✅ **100%** |
 | **Code Quality & Architecture** | **20%** | Clean separation of frontend and backend. Proper REST status codes (200, 201, 400, 401, 403, 404, 500). Secrets stored strictly in `.env` (ignored by `.gitignore`). Complete relational audit logging tracking all logins and blocked requests. Clean code free of unnecessary comments. | ✅ **100%** |
 | **UI/UX & Frontend** | **15%** | Responsive enterprise design inspired by Zoho CRM SaaS design language. Dynamic conditional rendering displaying only authorized applications. Interactive Admin console with user management, permissions matrix, and audit logs. | ✅ **100%** |
-| **Submission & Explanation** | **10%** | Comprehensive GitHub repository with clear setup instructions, automated verification test suite, and a complete 3–5 minute video presentation script (`VIDEO_SCRIPT.md`). | ✅ **100%** |
+| **Submission & Explanation** | **10%** | Comprehensive GitHub repository with clear setup instructions, automated verification test suite, and clear presentation of RBAC logic and Zoho OAuth integration within 3–5 minutes. | ✅ **100%** |
 
 ---
 
@@ -338,14 +337,10 @@ npm run build
 
 ---
 
-## Video Presentation Script
+## Video Walkthrough Submission
 
-A complete, word-for-word 3 to 5-minute video presentation script with timestamps and exact on-screen directions is provided in:
-
-👉 **[VIDEO_SCRIPT.md](VIDEO_SCRIPT.md)**
-
-### Video Submission Details
-- **Candidate Name**: Wasim Akram
+### Submission Details
+- **Candidate Name**: Shaik Akram
 - **Video Walkthrough Link**: `https://www.loom.com/share/your-video-link-here` *(replace with your recorded URL)*
 - **GitHub Repository**: `https://github.com/akram369/custom-employee-portal`
 - **Submission Date**: September 2026

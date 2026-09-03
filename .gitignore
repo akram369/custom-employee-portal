@@ -29,3 +29,6 @@ yarn-error.log*
 Thumbs.db
 .vscode/
 .idea/
+
+# Internal notes & scripts
+VIDEO_SCRIPT.md
