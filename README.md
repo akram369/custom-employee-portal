@@ -106,7 +106,7 @@ The **Enterprise Employee Portal** solves this through a dual-layer security arc
 
 ### 2. Clone and Install Dependencies
 ```bash
-git clone https://github.com/your-username/custom-employee-portal.git
+git clone https://github.com/akram369/custom-employee-portal.git
 cd custom-employee-portal
 
 # Install dependencies for both backend and frontend in one command
@@ -347,7 +347,7 @@ A complete, word-for-word 3 to 5-minute video presentation script with timestamp
 ### Video Submission Details
 - **Candidate Name**: Wasim Akram
 - **Video Walkthrough Link**: `https://www.loom.com/share/your-video-link-here` *(replace with your recorded URL)*
-- **GitHub Repository**: `https://github.com/your-username/custom-employee-portal`
+- **GitHub Repository**: `https://github.com/akram369/custom-employee-portal`
 - **Submission Date**: September 2026
 
 ---
