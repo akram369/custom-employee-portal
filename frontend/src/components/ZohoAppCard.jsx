@@ -9,6 +9,7 @@ import {
   Eye, 
   CheckCircle2, 
   ShieldAlert,
+  ShieldCheck,
   ArrowRight
 } from 'lucide-react';
 

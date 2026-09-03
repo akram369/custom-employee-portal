@@ -13,6 +13,56 @@ import {
 export default function ZohoDataModal({ app, data, loading, error, onClose, onRefresh }) {
   const [activeTab, setActiveTab] = useState('formatted'); // 'formatted' | 'raw'
 
+  // Normalize records whether live Zoho cloud array or simulation format
+  const normalizedRecords = React.useMemo(() => {
+    const rawList = data?.payload?.data || data?.payload?.records || [];
+    if (!Array.isArray(rawList)) return [];
+
+    return rawList.map((item, idx) => {
+      if (app?.id === 'zoho_crm') {
+        return {
+          id: item.id || `LEAD-${900 + idx}`,
+          company: item.Company || item.company || 'Enterprise Lead',
+          contact: item.Full_Name || (item.First_Name ? `${item.First_Name} ${item.Last_Name}` : item.Last_Name) || item.contact || item.Email || 'Corporate Client',
+          value: item.Annual_Revenue ? `₹${Number(item.Annual_Revenue).toLocaleString()}` : item.value || '₹4,85,000',
+          stage: item.Lead_Status || item.stage || 'Contacted',
+          probability: item.probability || '85%'
+        };
+      }
+      if (app?.id === 'zoho_desk') {
+        return {
+          id: item.ticketNumber ? `#${item.ticketNumber}` : item.id || `TICK-${4400 + idx}`,
+          subject: item.subject || 'Enterprise Service Request',
+          customer: item.email || item.phone || item.customer || 'Enterprise Client',
+          priority: item.priority || 'Medium',
+          status: item.status || 'Open',
+          assignedTo: item.assignee?.name || item.assignedTo || 'Unassigned / IT Support'
+        };
+      }
+      if (app?.id === 'zoho_people') {
+        return {
+          id: item.EmployeeID || item.id || `EMP-${1000 + idx}`,
+          name: item.Employee_Name || item.name || 'Staff Member',
+          department: item.Department || item.department || 'Operations',
+          role: item.Designation || item.role || 'Specialist',
+          status: item.Employee_Status || item.status || 'Active',
+          leaveBalance: item.leaveBalance || '18 Days'
+        };
+      }
+      if (app?.id === 'zoho_books') {
+        return {
+          id: item.invoice_number || item.id || `INV-${700 + idx}`,
+          client: item.customer_name || item.client || 'Enterprise Client',
+          amount: item.total ? `₹${Number(item.total).toLocaleString()}` : item.amount || '₹85,000',
+          status: item.status || 'Paid',
+          date: item.date || '2026-09-01',
+          dueDate: item.due_date || item.dueDate || '2026-09-30'
+        };
+      }
+      return item;
+    });
+  }, [data, app?.id]);
+
   if (!app) return null;
 
   return (
@@ -255,7 +305,7 @@ export default function ZohoDataModal({ app, data, loading, error, onClose, onRe
                           )}
                         </thead>
                         <tbody>
-                          {data?.payload?.records?.map((rec, i) => (
+                          {normalizedRecords.map((rec, i) => (
                             <tr key={i}>
                               {app.id === 'zoho_people' && (
                                 <>
