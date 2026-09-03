@@ -1,4 +1,5 @@
-# Custom Employee Portal with Zoho One Integration & RBAC
+# Enterprise Employee Portal
+> *One workspace. Every employee. The right tools.*
 
 [![Node.js](https://img.shields.io/badge/Node.js-v18%2B-green?logo=node.js)](https://nodejs.org/)
 [![React](https://img.shields.io/badge/React-18-blue?logo=react)](https://reactjs.org/)
@@ -6,7 +7,7 @@
 [![SQLite](https://img.shields.io/badge/SQLite-Relational%20DB-003B57?logo=sqlite)](https://sqlite.org/)
 [![Zoho One](https://img.shields.io/badge/Zoho%20One-OAuth%202.0%20API-red?logo=zoho)](https://www.zoho.com/one/)
 
-A production-grade, secure Custom Employee Portal featuring **built-in JWT Authentication**, **Role-Based Access Control (RBAC)**, and **backend Zoho One OAuth API integration**. Employees access only the specific Zoho applications permitted by their assigned corporate role and **never require individual Zoho credentials**.
+A production-grade, secure Enterprise Employee Portal designed with Zoho's clean enterprise SaaS design language, featuring **built-in JWT Authentication**, **Role-Based Access Control (RBAC)**, and **backend Zoho One OAuth API integration**. Employees access only the specific Zoho applications permitted by their assigned corporate role and **never require individual Zoho credentials**.
 
 ---
 
