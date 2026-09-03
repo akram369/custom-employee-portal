@@ -95,27 +95,33 @@ export default function ZohoAppCard({ app, isAllowed, userRoles, onInspect, onLa
       </div>
 
       {/* Card Actions */}
-      <div className="saas-app-actions">
+      <div className="saas-app-actions" style={{ flexDirection: 'column', gap: '0.65rem' }}>
         {isAllowed ? (
           <>
-            <button
-              className="btn btn-primary btn-sm"
-              style={{ flex: 1.3 }}
-              onClick={() => onLaunch(app)}
-              title={`Launch ${app.name} via backend service account`}
-            >
-              <span>Open Application</span>
-              <ArrowRight size={14} />
-            </button>
-            <button
-              className="btn btn-secondary btn-sm"
-              style={{ flex: 0.9 }}
-              onClick={() => onInspect(app)}
-              title="View live backend-proxied records"
-            >
-              <Eye size={14} />
-              <span>View Data</span>
-            </button>
+            <div style={{ display: 'flex', gap: '0.6rem', width: '100%' }}>
+              <button
+                className="btn btn-primary btn-sm"
+                style={{ flex: 1.3, fontWeight: 700 }}
+                onClick={() => onInspect(app)}
+                title={`Fetch live ${app.name} data through backend service account without individual Zoho credentials`}
+              >
+                <Eye size={15} />
+                <span>View {app.name.replace('Zoho ', '')} Data</span>
+              </button>
+              <button
+                className="btn btn-secondary btn-sm"
+                style={{ flex: 0.9 }}
+                onClick={() => onLaunch(app)}
+                title={`Open official web portal in new tab`}
+              >
+                <span>Web Portal</span>
+                <ExternalLink size={13} />
+              </button>
+            </div>
+            <div style={{ fontSize: '0.725rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+              <ShieldCheck size={13} style={{ color: '#16a34a' }} />
+              <span>Backend API Proxy: Zero Zoho credentials needed</span>
+            </div>
           </>
         ) : (
           <button

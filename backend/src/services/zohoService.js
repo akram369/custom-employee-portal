@@ -60,6 +60,7 @@ const ZOHO_APPS = [
  * Checks if the backend has valid production Zoho credentials configured
  */
 function isZohoConfigured() {
+  if (process.env.ZOHO_MODE === 'demo') return false;
   const { ZOHO_CLIENT_ID, ZOHO_CLIENT_SECRET, ZOHO_REFRESH_TOKEN } = process.env;
   return (
     ZOHO_CLIENT_ID &&
@@ -87,7 +88,7 @@ async function getZohoAccessToken() {
     return { token: cachedToken, isLive: false, cached: false };
   }
 
-  const accountsUrl = process.env.ZOHO_ACCOUNTS_URL || 'https://accounts.zoho.com';
+  const accountsUrl = process.env.ZOHO_ACCOUNTS_URL || 'https://accounts.zoho.in';
 
   try {
     const response = await axios.post(`${accountsUrl}/oauth/v2/token`, null, {
@@ -118,6 +119,27 @@ async function getZohoAccessToken() {
 }
 
 /**
+ * Helper to determine regional API URLs based on accounts domain
+ */
+function getRegionalApiUrl(service) {
+  const accountsUrl = process.env.ZOHO_ACCOUNTS_URL || 'https://accounts.zoho.in';
+  const isIndia = accountsUrl.includes('.in');
+
+  switch (service) {
+    case 'people':
+      return isIndia ? 'https://people.zoho.in/people/api/forms/json/employee/getRecords' : 'https://people.zoho.com/people/api/forms/json/employee/getRecords';
+    case 'crm':
+      return isIndia ? 'https://www.zohoapis.in/crm/v2/Leads' : 'https://www.zohoapis.com/crm/v2/Leads';
+    case 'desk':
+      return isIndia ? 'https://desk.zoho.in/api/v1/tickets' : 'https://desk.zoho.com/api/v1/tickets';
+    case 'books':
+      return isIndia ? 'https://books.zoho.in/api/v3/invoices' : 'https://books.zoho.com/api/v3/invoices';
+    default:
+      return '';
+  }
+}
+
+/**
  * Gets Zoho applications permitted for a set of roles
  */
 function getApplicationsForRoles(userRoles = []) {
@@ -134,9 +156,10 @@ function getApplicationsForRoles(userRoles = []) {
 async function fetchZohoPeopleData(tokenInfo) {
   if (tokenInfo.isLive && !tokenInfo.error) {
     try {
-      const response = await axios.get('https://people.zoho.com/people/api/forms/json/employee/getRecords', {
+      const url = getRegionalApiUrl('people');
+      const response = await axios.get(url, {
         headers: { Authorization: `Zoho-oauthtoken ${tokenInfo.token}` },
-        timeout: 5000
+        timeout: 6000
       });
       return {
         isLive: true,
@@ -172,9 +195,10 @@ async function fetchZohoPeopleData(tokenInfo) {
 async function fetchZohoCrmData(tokenInfo) {
   if (tokenInfo.isLive && !tokenInfo.error) {
     try {
-      const response = await axios.get('https://www.zohoapis.com/crm/v2/Leads', {
+      const url = getRegionalApiUrl('crm');
+      const response = await axios.get(url, {
         headers: { Authorization: `Zoho-oauthtoken ${tokenInfo.token}` },
-        timeout: 5000
+        timeout: 6000
       });
       return {
         isLive: true,
@@ -210,9 +234,10 @@ async function fetchZohoCrmData(tokenInfo) {
 async function fetchZohoDeskData(tokenInfo) {
   if (tokenInfo.isLive && !tokenInfo.error) {
     try {
-      const response = await axios.get('https://desk.zoho.com/api/v1/tickets', {
+      const url = getRegionalApiUrl('desk');
+      const response = await axios.get(url, {
         headers: { Authorization: `Zoho-oauthtoken ${tokenInfo.token}` },
-        timeout: 5000
+        timeout: 6000
       });
       return {
         isLive: true,
@@ -248,9 +273,10 @@ async function fetchZohoDeskData(tokenInfo) {
 async function fetchZohoBooksData(tokenInfo) {
   if (tokenInfo.isLive && !tokenInfo.error) {
     try {
-      const response = await axios.get('https://books.zoho.com/api/v3/invoices', {
+      const url = getRegionalApiUrl('books');
+      const response = await axios.get(url, {
         headers: { Authorization: `Zoho-oauthtoken ${tokenInfo.token}` },
-        timeout: 5000
+        timeout: 6000
       });
       return {
         isLive: true,
